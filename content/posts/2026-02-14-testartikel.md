@@ -5,4 +5,4 @@ draft: false
 ---
 > * ## Dieser Test ist sehr gut für mich
 >
->   ![](/uploads/1689886229248.jpeg "Alexander Schmid")
+>   ![Test Test Test](www.google.ch "Alexander Schmid")
