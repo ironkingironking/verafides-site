@@ -1,0 +1,28 @@
+backend:
+  name: github
+  repo: DEIN_GITHUB_USER/verafides-site
+  branch: main
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "posts"
+    label: "Artikel"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - label: "Titel"
+        name: "title"
+        widget: "string"
+      - label: "Datum"
+        name: "date"
+        widget: "datetime"
+      - label: "Entwurf"
+        name: "draft"
+        widget: "boolean"
+        default: false
+      - label: "Text"
+        name: "body"
+        widget: "markdown"

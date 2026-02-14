@@ -1,0 +1,28 @@
+nguageCode = 'en-us'
+baseURL = "http://localhost:1313/"
+languageCode = "de-ch"
+title = "Verafides"
+enableRobotsTXT = true
+
+# Für Inhalte
+[pagination]
+  pagerSize = 10
+
+[permalinks]
+  posts = "/aktuell/:year/:month/:slug/"
+
+# (Optional) Menüs
+[menu]
+  [[menu.main]]
+    name = "Aktuelles"
+    url = "/aktuell/"
+    weight = 10
+  [[menu.main]]
+    name = "Über uns"
+    url = "/ueber-uns/"
+    weight = 20
+  [[menu.main]]
+    name = "Kontakt"
+    url = "/kontakt/"
+    weight = 30
+
