@@ -1,0 +1,14 @@
+{
+  "name": "verafides-site",
+  "private": true,
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^3.4.0"
+  },
+  "scripts": {
+    "dev": "npx netlify dev --port 8888",
+    "dev:hugo": "hugo server --port 1313",
+    "tw:build": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --minify",
+    "tw:watch": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --watch"
+  }
+}

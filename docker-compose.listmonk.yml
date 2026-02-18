@@ -1,0 +1,47 @@
+services:
+  listmonk_db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${LISTMONK_DB_NAME}
+      POSTGRES_USER: ${LISTMONK_DB_USER}
+      POSTGRES_PASSWORD: ${LISTMONK_DB_PASSWORD}
+    ports:
+      - "${LISTMONK_DB_PORT}:5432"
+    volumes:
+      - listmonk_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${LISTMONK_DB_USER} -d ${LISTMONK_DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  listmonk:
+    image: listmonk/listmonk:latest
+    restart: unless-stopped
+    depends_on:
+      listmonk_db:
+        condition: service_healthy
+    ports:
+      - "${LISTMONK_PORT}:9000"
+    environment:
+      TZ: ${TZ}
+      LISTMONK_app__address: 0.0.0.0:9000
+      LISTMONK_db__host: listmonk_db
+      LISTMONK_db__port: 5432
+      LISTMONK_db__database: ${LISTMONK_DB_NAME}
+      LISTMONK_db__user: ${LISTMONK_DB_USER}
+      LISTMONK_db__password: ${LISTMONK_DB_PASSWORD}
+      LISTMONK_db__ssl_mode: disable
+      LISTMONK_ADMIN_USER: ${LISTMONK_ADMIN_USER}
+      LISTMONK_ADMIN_PASSWORD: ${LISTMONK_ADMIN_PASSWORD}
+    command: >
+      sh -c "./listmonk --install --idempotent --yes --config '' &&
+             ./listmonk --upgrade --yes --config '' &&
+             ./listmonk --config ''"
+    volumes:
+      - listmonk_uploads:/listmonk/uploads
+
+volumes:
+  listmonk_db_data:
+  listmonk_uploads:

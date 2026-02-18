@@ -1,0 +1,21 @@
+{{ define "main" }}
+  <section class="space-y-6">
+    <h1 class="text-3xl font-semibold tracking-tight">{{ .Site.Title }}</h1>
+
+    {{ with .Content }}
+      <div class="prose prose-slate max-w-none">{{ . }}</div>
+    {{ end }}
+
+    <div class="pt-6">
+      <h2 class="text-lg font-semibold">Neueste Artikel</h2>
+      <ul class="mt-3 space-y-2">
+        {{ range first 5 (where .Site.RegularPages "Section" "posts") }}
+          <li>
+            <a class="font-medium hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <span class="text-sm text-slate-500"> · {{ .Date.Format "02.01.2006" }}</span>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+  </section>
+{{ end }}

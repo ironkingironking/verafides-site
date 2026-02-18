@@ -1,0 +1,48 @@
+<form class="space-y-4 not-prose" method="POST" action="/api/contact" accept-charset="UTF-8">
+  <!-- Honeypot -->
+  <div class="hidden">
+    <label>Bitte leer lassen: <input name="website" autocomplete="off"></label>
+  </div>
+
+  <!-- Event aus URL übernehmen (JS setzt es) -->
+  <input type="hidden" name="event" id="event">
+  <input type="hidden" name="ts" value="{{ now.Unix }}">
+
+  <div class="rounded-xl border border-slate-200 p-4 bg-slate-50">
+    <div class="text-sm text-slate-600">Veranstaltung</div>
+    <div class="font-semibold" id="eventLabel">—</div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="name">Name</label>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="name" name="name" required>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="email">E-Mail</label>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="email" name="email" type="email" required>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="message">Bemerkung (optional)</label>
+    <textarea class="w-full rounded-lg border border-slate-300 px-3 py-2" id="message" name="message" rows="4"></textarea>
+  </div>
+
+  <!-- Subject fest -->
+  <input type="hidden" name="subject" value="Anmeldung Veranstaltung">
+
+  <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" type="submit">
+    Anmeldung senden
+  </button>
+</form>
+
+<script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const ev = params.get("event") || "";
+    const eventField = document.getElementById("event");
+    const eventLabel = document.getElementById("eventLabel");
+    if (eventField) eventField.value = ev;
+    if (eventLabel) eventLabel.textContent = ev || "—";
+  })();
+</script>

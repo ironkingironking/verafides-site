@@ -1,0 +1,68 @@
+<header class="border-b border-slate-200 bg-white">
+  <div class="mx-auto max-w-3xl px-4 py-4 flex items-center justify-between gap-4">
+<a href="/" class="flex items-center gap-3">
+  <img src="/images/logo.svg"
+     alt="Vera Fides"
+     class="h-18  md:h-20 w-auto">
+  <span class="font-semibold tracking-tight text-slate-900">
+    {{ .Site.Title }}
+  </span>
+</a>
+
+    <!-- Mobile: Menü (Details) -->
+    <details class="md:hidden relative">
+      <summary class="list-none cursor-pointer rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50">
+        Menü
+      </summary>
+
+      <div class="absolute right-0 mt-2 w-64 rounded-xl border border-slate-200 bg-white shadow-sm p-2 z-50">
+        {{ range .Site.Menus.main }}
+          {{ if .HasChildren }}
+            <details class="rounded-lg">
+              <summary class="list-none cursor-pointer rounded-lg px-3 py-2 hover:bg-slate-50 text-slate-800">
+                {{ .Name }}
+              </summary>
+              <div class="pl-2 pb-2">
+                {{ range .Children }}
+                  <a href="{{ .URL }}" class="block rounded-lg px-3 py-2 hover:bg-slate-50 text-slate-700">
+                    {{ .Name }}
+                  </a>
+                {{ end }}
+              </div>
+            </details>
+          {{ else }}
+            <a href="{{ .URL }}" class="block rounded-lg px-3 py-2 hover:bg-slate-50 text-slate-800">
+              {{ .Name }}
+            </a>
+          {{ end }}
+        {{ end }}
+      </div>
+    </details>
+
+    <!-- Desktop: Menü -->
+    <nav class="hidden md:flex items-center gap-5 text-sm text-slate-600">
+      {{ range .Site.Menus.main }}
+        {{ if .HasChildren }}
+          <details class="relative group">
+            <summary class="list-none cursor-pointer hover:text-slate-900 inline-flex items-center gap-1">
+              {{ .Name }} <span aria-hidden="true">▾</span>
+            </summary>
+
+            <div class="absolute left-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-sm p-2 z-50">
+              {{ range .Children }}
+                <a href="{{ .URL }}" class="block rounded-lg px-3 py-2 hover:bg-slate-50 hover:text-slate-900">
+                  {{ .Name }}
+                </a>
+              {{ end }}
+            </div>
+          </details>
+        {{ else }}
+          <a href="{{ .URL }}" class="hover:text-slate-900">
+            {{ .Name }}
+          </a>
+        {{ end }}
+      {{ end }}
+    </nav>
+  </div>
+</header>
+

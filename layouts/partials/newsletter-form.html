@@ -1,0 +1,33 @@
+<div class="space-y-6 not-prose">
+  <form class="space-y-4 rounded-xl border border-slate-200 p-4 bg-slate-50" method="POST" action="/api/newsletter-subscribe" accept-charset="UTF-8">
+    <h2 class="text-lg font-semibold text-slate-900">Newsletter abonnieren</h2>
+    <div class="hidden">
+      <label>Bitte leer lassen: <input name="website" autocomplete="off"></label>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1" for="newsletter-name">Name (optional)</label>
+      <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="newsletter-name" name="name">
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1" for="newsletter-email">E-Mail</label>
+      <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="newsletter-email" name="email" type="email" required>
+    </div>
+    <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-100" type="submit">
+      Anmelden
+    </button>
+  </form>
+
+  <form class="space-y-4 rounded-xl border border-slate-200 p-4" method="POST" action="/api/newsletter-unsubscribe" accept-charset="UTF-8">
+    <h2 class="text-lg font-semibold text-slate-900">Newsletter abbestellen</h2>
+    <div class="hidden">
+      <label>Bitte leer lassen: <input name="website" autocomplete="off"></label>
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1" for="newsletter-unsub-email">E-Mail</label>
+      <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="newsletter-unsub-email" name="email" type="email" required>
+    </div>
+    <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" type="submit">
+      Abmelden
+    </button>
+  </form>
+</div>

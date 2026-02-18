@@ -1,6 +1,11 @@
-
 public/
 .hugo_build.lock
 
-public/
-.hugo_build.lock
+# Local Netlify folder
+.netlify
+
+# Local environment files (secrets)
+.env
+.env.*
+!.env.example
+!.env.listmonk.example

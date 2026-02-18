@@ -1,0 +1,32 @@
+{{ define "main" }}
+  <article class="space-y-6">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-semibold tracking-tight">{{ .Title }}</h1>
+    </header>
+
+    {{ if .Params.contact_form }}
+      <div class="not-prose my-6">
+        {{ partial "contact-form.html" . }}
+      </div>
+    {{ end }}
+{{ if eq .Params.form "registration" }}
+  <div class="not-prose my-6">
+    {{ partial "registration-form.html" . }}
+  </div>
+{{ end }}
+{{ if eq .Params.form "newsletter" }}
+  <div class="not-prose my-6">
+    {{ partial "newsletter-form.html" . }}
+  </div>
+{{ end }}
+{{ if eq .Params.form "membership" }}
+  <div class="not-prose my-6">
+    {{ partial "membership-form.html" . }}
+  </div>
+{{ end }}
+
+    <div class="prose prose-slate max-w-none">
+      {{ .Content }}
+    </div>
+  </article>
+{{ end }}

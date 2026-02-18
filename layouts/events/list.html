@@ -1,0 +1,80 @@
+{{ define "main" }}
+  {{ $now := now }}
+
+  <section class="space-y-8">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-semibold tracking-tight">{{ .Title }}</h1>
+      {{ with .Content }}
+        <div class="prose prose-slate max-w-none">{{ . }}</div>
+      {{ end }}
+    </header>
+
+    {{/* Kommende */}}
+    {{ $upcoming := where .RegularPages "Date" ">=" $now | sort "Date" "asc" }}
+    <div class="space-y-4">
+      <h2 class="text-xl font-semibold">Kommende Veranstaltungen</h2>
+
+      {{ if gt (len $upcoming) 0 }}
+        <ul class="space-y-3">
+          {{ range $upcoming }}
+            <li class="rounded-xl border border-slate-200 p-4">
+              <a class="text-lg font-semibold hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
+              <div class="text-sm text-slate-500 mt-1">
+                {{ .Date.Format "02.01.2006 15:04" }}
+                {{ with .Params.location }} · {{ . }}{{ end }}
+              </div>
+              {{ with .Params.summary }}
+                <p class="mt-2 text-slate-700">{{ . }}</p>
+              {{ end }}
+              <div class="mt-3 flex gap-3 text-sm">
+                <a class="underline" href="{{ .RelPermalink }}">Details</a>
+                <a class="underline" href="{{ .RelPermalink }}index.ics">In Kalender</a>
+              </div>
+            </li>
+          {{ end }}
+        </ul>
+      {{ else }}
+        <p class="text-slate-600">Derzeit sind keine kommenden Veranstaltungen publiziert.</p>
+      {{ end }}
+    </div>
+
+    {{/* Vergangene */}}
+    {{ $past := where .RegularPages "Date" "<" $now | sort "Date" "desc" }}
+    <div class="space-y-4">
+      <h2 class="text-xl font-semibold">Vergangene Veranstaltungen</h2>
+
+      {{ if gt (len $past) 0 }}
+        <ul class="space-y-3">
+          {{ range first 10 $past }}
+            <li class="rounded-xl border border-slate-200 p-4">
+              <a class="text-lg font-semibold hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
+              <div class="text-sm text-slate-500 mt-1">
+                {{ .Date.Format "02.01.2006 15:04" }}
+                {{ with .Params.location }} · {{ . }}{{ end }}
+              </div>
+{{ $now := now }}
+
+{{ if and .Params.registration_enabled (ge .Date $now) }}
+  <div class="mt-3 not-prose">
+    <a class="inline-flex items-center rounded-lg border border-slate-300 px-3 py-2 hover:bg-slate-50"
+       href="/anmeldung/?event={{ .File.TranslationBaseName | urlquery }}">
+      Jetzt anmelden
+    </a>
+  </div>
+{{ else if and .Params.registration_enabled (lt .Date $now) }}
+  <div class="mt-3 text-sm text-slate-400">Anmeldung geschlossen</div>
+{{ else }}
+  <div class="mt-3 text-sm text-slate-400">Anmeldung folgt</div>
+{{ end }}
+
+
+            </li>
+          {{ end }}
+        </ul>
+      {{ else }}
+        <p class="text-slate-600">Noch keine vergangenen Veranstaltungen.</p>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}
+

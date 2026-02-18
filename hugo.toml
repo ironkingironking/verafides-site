@@ -1,28 +1,110 @@
-nguageCode = 'en-us'
+buildFuture = true
+
 baseURL = "http://localhost:1313/"
 languageCode = "de-ch"
 title = "Verafides"
 enableRobotsTXT = true
 
+
 # Für Inhalte
 [pagination]
   pagerSize = 10
 
-[permalinks]
-  posts = "/aktuell/:year/:month/:slug/"
 
 # (Optional) Menüs
 [menu]
-  [[menu.main]]
-    name = "Aktuelles"
-    url = "/aktuell/"
-    weight = 10
-  [[menu.main]]
-    name = "Über uns"
-    url = "/ueber-uns/"
-    weight = 20
-  [[menu.main]]
-    name = "Kontakt"
-    url = "/kontakt/"
-    weight = 30
+[[menu.main]]
+  name = "Über uns"
+  identifier = "ueber"
+  url = "/ueber/"
+  weight = 10
 
+[[menu.main]]
+  name = "Mission"
+  parent = "ueber"
+  url = "/ueber/mission/"
+  weight = 10
+
+[[menu.main]]
+  name = "Vorstand"
+  parent = "ueber"
+  url = "/ueber/vorstand/"
+  weight = 20
+
+[[menu.main]]
+  name = "Statuten"
+  parent = "ueber"
+  url = "/ueber/statuten/"
+  weight = 30
+
+[[menu.main]]
+  name = "Dokumente"
+  parent = "ueber"
+  url = "/ueber/dokumente/"
+  weight = 40
+
+[[menu.main]]
+  name = "Aktuelles"
+  identifier = "aktuelles"
+  url = "/aktuelles/"
+  weight = 20
+
+[[menu.main]]
+  name = "Aktivitäten"
+  parent = "aktuelles"
+  url = "/aktuelles/"
+  weight = 10
+
+[[menu.main]]
+  name = "Veranstaltungen"
+  parent = "aktuelles"
+  url = "/unterstuetzen/veranstaltungen/"
+  weight = 20
+
+[[menu.main]]
+  name = "Kontakt"
+  url = "/kontakt/"
+  weight = 30
+[[menu.main]]
+  name = "Unterstützen"
+  identifier = "unterstuetzen"
+  url = "/unterstuetzen/"
+  weight = 25
+
+[[menu.main]]
+  name = "Informiert bleiben"
+  parent = "unterstuetzen"
+  url = "/unterstuetzen/informiert-bleiben/"
+  weight = 10
+
+[[menu.main]]
+  name = "Mitglied werden"
+  parent = "unterstuetzen"
+  url = "/unterstuetzen/mitglied-werden/"
+  weight = 20
+
+[[menu.main]]
+  name = "Spenden"
+  parent = "unterstuetzen"
+  url = "/unterstuetzen/spenden/"
+  weight = 30
+
+[permalinks]
+  posts = "/aktuelles/:year-:month-:day-:slug/"
+  pages = "/:slug/"
+events = "/unterstuetzen/veranstaltungen/:year-:month-:day-:slug/"
+
+[outputFormats]
+  [outputFormats.ICS]
+    mediaType = "text/calendar"
+    baseName = "index"
+    isPlainText = true
+    rel = "alternate"
+    permalinkable = true
+
+[outputs]
+  page = ["HTML", "ICS"]
+
+[security]
+  [security.funcs]
+    getenv = ['^HUGO_', '^CI$', '^TURNSTILE_SITE_KEY$']

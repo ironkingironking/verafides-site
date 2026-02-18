@@ -1,0 +1,50 @@
+local_backend: true
+
+backend:
+  name: github
+  repo: ironkingironking/verafides-site
+  branch: main
+
+media_folder: "static/uploads"
+public_folder: "/uploads"
+
+
+
+collections:
+  - name: "posts"
+    label: "Artikel"
+    folder: "content/posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Datum", name: "date", widget: "datetime" }
+      - { label: "Bild", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+    - name: "pages"
+    label: "Seiten"
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "events"
+    label: "Veranstaltungen"
+    folder: "content/events"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Titel", name: "title", widget: "string" }
+      - { label: "Datum", name: "date", widget: "datetime" }
+      - { label: "Ort", name: "location", widget: "string", required: false }
+      - { label: "Kurztext", name: "summary", widget: "text", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Entwurf", name: "draft", widget: "boolean", default: false, required: false }
+

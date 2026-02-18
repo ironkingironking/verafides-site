@@ -1,0 +1,9 @@
+<footer class="border-t border-slate-200">
+  <div class="mx-auto max-w-3xl px-4 py-6 text-sm text-slate-500">
+    <div class="flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-10">
+      <span class="leading-relaxed">© {{ now.Year }} {{ .Site.Title }}</span>
+      <a class="leading-relaxed hover:text-slate-700 underline underline-offset-4" href="{{ "/impressum/" | relURL }}">Impressum</a>
+      <a class="leading-relaxed hover:text-slate-700 underline underline-offset-4" href="{{ "/datenschutz/" | relURL }}">Datenschutz</a>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,48 @@
+<form class="space-y-4 not-prose" method="POST" action="/api/contact" accept-charset="UTF-8">
+  <input type="hidden" name="ts" value="{{ now.Unix }}">
+
+  <div class="hidden">
+    <label>Bitte leer lassen: <input name="website" autocomplete="off"></label>
+  </div>
+
+  <input type="hidden" name="subject" value="Mitgliedschaftsanfrage">
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="membership-name">Name</label>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="membership-name" name="name" required>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="membership-email">E-Mail</label>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="membership-email" name="email" type="email" required>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="membership-address">Adresse (optional)</label>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="membership-address" name="address">
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="membership-type">Mitgliedschaft</label>
+    <select class="w-full rounded-lg border border-slate-300 px-3 py-2" id="membership-type" name="membership_type" required>
+      <option value="" selected disabled>Bitte waehlen</option>
+      <option value="Aktivmitgliedschaft">Aktivmitgliedschaft (CHF 60/Jahr)</option>
+      <option value="Passivmitgliedschaft">Passivmitgliedschaft (freiwillige Spende)</option>
+    </select>
+  </div>
+
+  <p class="text-sm text-slate-600">
+    Kosten: Aktivmitgliedschaft CHF 60 pro Jahr, Passivmitgliedschaft freiwillige Spende.
+  </p>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="membership-message">Nachricht (optional)</label>
+    <textarea class="w-full rounded-lg border border-slate-300 px-3 py-2" id="membership-message" name="message" rows="5"></textarea>
+  </div>
+
+  {{ partial "turnstile-widget.html" . }}
+
+  <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" type="submit">
+    Mitgliedschaft anfragen
+  </button>
+</form>

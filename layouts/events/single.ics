@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Vera Fides//Events//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:{{ .File.Path }}@verafides.ch
+DTSTAMP:{{ now.UTC.Format "20060102T150405Z" }}
+DTSTART:{{ .Date.UTC.Format "20060102T150405Z" }}
+{{ with .Params.end }}DTEND:{{ (time .).UTC.Format "20060102T150405Z" }}{{ end }}
+SUMMARY:{{ .Title | plainify }}
+{{ with .Params.location }}LOCATION:{{ . | plainify }}{{ end }}
+DESCRIPTION:{{ with .Params.summary }}{{ . | plainify }}{{ else }}{{ .Summary | plainify }}{{ end }}
+URL:{{ .Permalink }}
+END:VEVENT
+END:VCALENDAR

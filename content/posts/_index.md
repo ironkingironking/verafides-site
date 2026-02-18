@@ -1,0 +1,4 @@
+---
+title: "Aktuelles"
+url: "/aktuelles/"
+---
