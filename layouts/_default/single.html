@@ -28,5 +28,44 @@
     <div class="prose prose-slate max-w-none">
       {{ .Content }}
     </div>
+
+    {{ if .Params.documents_list }}
+      {{ $docs := where .Site.RegularPages "Section" "documents" }}
+      {{ $docs = sort $docs "Date" "desc" }}
+      <section class="not-prose space-y-4">
+        <h2 class="text-xl font-semibold">Dokumente</h2>
+
+        {{ if gt (len $docs) 0 }}
+          <ul class="space-y-3">
+            {{ range $docs }}
+              <li class="rounded-xl border border-slate-200 p-4">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                  <div class="space-y-1">
+                    <h3 class="text-lg font-semibold">{{ .Title }}</h3>
+                    {{ with .Date }}
+                      <div class="text-sm text-slate-500">{{ .Format "02.01.2006" }}</div>
+                    {{ end }}
+                    {{ with .Params.summary }}
+                      <p class="text-slate-700">{{ . }}</p>
+                    {{ end }}
+                  </div>
+                  {{ with .Params.file }}
+                    <a class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" href="{{ . }}" target="_blank" rel="noopener">
+                      Dokument herunterladen
+                    </a>
+                  {{ else }}
+                    <a class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" href="{{ .RelPermalink }}">
+                      Details
+                    </a>
+                  {{ end }}
+                </div>
+              </li>
+            {{ end }}
+          </ul>
+        {{ else }}
+          <p class="text-slate-600">Derzeit sind noch keine Dokumente veroeffentlicht.</p>
+        {{ end }}
+      </section>
+    {{ end }}
   </article>
 {{ end }}

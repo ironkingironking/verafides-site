@@ -2,5 +2,6 @@
 title: "Dokumente"
 type: "pages"
 url: "/ueber/dokumente/"
+documents_list: true
 ---
-Dokumente und Downloads.
+Hier findest du unsere aktuellen Dokumente und Downloads.
