@@ -62,6 +62,18 @@ enableRobotsTXT = true
   weight = 20
 
 [[menu.main]]
+  name = "Teilaustritt"
+  parent = "aktuelles"
+  url = "/aktuelles/teilaustritt/"
+  weight = 30
+
+[[menu.main]]
+  name = "Liturgische Missbräuche"
+  parent = "aktuelles"
+  url = "/aktuelles/liturgische-missbraeuche/"
+  weight = 40
+
+[[menu.main]]
   name = "Kontakt"
   url = "/kontakt/"
   weight = 30
