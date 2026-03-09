@@ -3,11 +3,14 @@ title: "Spenden"
 type: "pages"
 url: "/unterstuetzen/spenden/"
 ---
-Mit deiner Spende unterstuetzt du unsere Arbeit direkt und unkompliziert.
+Mit deiner Spende unterstützt du unsere Arbeit direkt und wirkungsvoll.
 
-## Spende per Ueberweisung
+Wir setzen Spenden transparent für Aufklärung, Projekte und Vereinsarbeit ein.
 
-Du kannst einmalig oder regelmaessig per Bankueberweisung spenden.
+## Spende per Überweisung
+
+Du kannst einmalig oder regelmässig per Banküberweisung spenden.
+Bitte nutze dafür folgende Angaben:
 
 - Kontoinhaber: `Vera Fides` (anpassen)
 - Bank: `Bankname` (anpassen)
@@ -15,11 +18,11 @@ Du kannst einmalig oder regelmaessig per Bankueberweisung spenden.
 - BIC/SWIFT: `XXXXXXXX` (optional)
 - Verwendungszweck: `Spende Vera Fides`
 
-## Regelmaessige Unterstuetzung
+## Regelmässig unterstützen
 
-Wenn du uns langfristig helfen moechtest, richte am besten einen monatlichen Dauerauftrag ein.
-So koennen wir besser planen und nachhaltig arbeiten.
+Mit einem monatlichen Dauerauftrag hilfst du besonders nachhaltig.
+Schon kleine regelmässige Beiträge geben uns Planungssicherheit.
 
-## Danke
+## Herzlichen Dank
 
-Jeder Beitrag hilft. Vielen Dank fuer deine Unterstuetzung.
+Jeder Beitrag zählt. Danke für deine Unterstützung.

@@ -164,7 +164,7 @@ exports.handler = async function handler(event) {
   const finalSubject = isEventRegistration
     ? `Anmeldung: ${eventName || "Veranstaltung"}`
     : isAbuseReport
-      ? (subject || "Meldung liturgische Missbraeuche")
+      ? (subject || "Meldung liturgische Missbräuche")
       : subject;
 
   const to = process.env.CONTACT_TO_EMAIL || DEFAULT_TO_EMAIL;
@@ -187,7 +187,7 @@ exports.handler = async function handler(event) {
     : isMembershipRequest
       ? `<h2>Neue Mitgliedschaftsanfrage</h2>\n<p><strong>Name:</strong> ${safeName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Mitgliedschaft:</strong> ${safeMembershipType}<br>\n<strong>Adresse:</strong> ${safeAddress}</p>\n<p><strong>Nachricht:</strong><br>${safeMessage}</p>`
       : isAbuseReport
-        ? `<h2>Neue Meldung: Liturgische Missbraeuche</h2>\n<p><strong>Vorname:</strong> ${safeFirstName}<br>\n<strong>Name:</strong> ${safeLastName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Adresse:</strong> ${safeAddress}<br>\n<strong>Telefon:</strong> ${safePhone}</p>\n<p><strong>Sachverhalt:</strong><br>${safeMessage}</p>\n<p><strong>Weitergabe der Personalien:</strong><br>${safeSharePermission}</p>\n<p><strong>Bereits an andere Stelle gemeldet:</strong><br>${safeReportedElsewhere}</p>\n<p><strong>Ergebnis der bisherigen Meldung:</strong><br>${safeReportedOutcome}</p>`
+        ? `<h2>Neue Meldung: Liturgische Missbräuche</h2>\n<p><strong>Vorname:</strong> ${safeFirstName}<br>\n<strong>Name:</strong> ${safeLastName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Adresse:</strong> ${safeAddress}<br>\n<strong>Telefon:</strong> ${safePhone}</p>\n<p><strong>Sachverhalt:</strong><br>${safeMessage}</p>\n<p><strong>Weitergabe der Personalien:</strong><br>${safeSharePermission}</p>\n<p><strong>Bereits an andere Stelle gemeldet:</strong><br>${safeReportedElsewhere}</p>\n<p><strong>Ergebnis der bisherigen Meldung:</strong><br>${safeReportedOutcome}</p>`
         : `<h2>Neue Kontaktanfrage</h2>\n<p><strong>Name:</strong> ${safeName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Betreff:</strong> ${escapeHtml(subject)}</p>\n<p><strong>Nachricht:</strong><br>${safeMessage}</p>`;
 
   const text = isEventRegistration
@@ -195,7 +195,7 @@ exports.handler = async function handler(event) {
     : isMembershipRequest
       ? `Neue Mitgliedschaftsanfrage\n\nName: ${name}\nE-Mail: ${email}\nMitgliedschaft: ${membershipType || "-"}\nAdresse: ${address || "-"}\nNachricht: ${message || "-"}`
       : isAbuseReport
-        ? `Neue Meldung: Liturgische Missbraeuche\n\nVorname: ${firstName}\nName: ${lastName}\nE-Mail: ${email}\nAdresse: ${address || "-"}\nTelefon: ${phone || "-"}\n\nSachverhalt:\n${message || "-"}\n\nWeitergabe der Personalien:\n${sharePermission || "-"}\n\nBereits an andere Stelle gemeldet:\n${reportedElsewhere || "-"}\n\nErgebnis der bisherigen Meldung:\n${reportedOutcome || "-"}`
+        ? `Neue Meldung: Liturgische Missbräuche\n\nVorname: ${firstName}\nName: ${lastName}\nE-Mail: ${email}\nAdresse: ${address || "-"}\nTelefon: ${phone || "-"}\n\nSachverhalt:\n${message || "-"}\n\nWeitergabe der Personalien:\n${sharePermission || "-"}\n\nBereits an andere Stelle gemeldet:\n${reportedElsewhere || "-"}\n\nErgebnis der bisherigen Meldung:\n${reportedOutcome || "-"}`
         : `Neue Kontaktanfrage\n\nName: ${name}\nE-Mail: ${email}\nBetreff: ${subject}\nNachricht: ${message || "-"}`;
 
   try {

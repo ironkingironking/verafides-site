@@ -46,7 +46,7 @@ function renderMessagePage(title, message) {
     <main>
       <h1>${title}</h1>
       <p>${message}</p>
-      <a href="${BACK_PATH}">Zurueck zur Newsletter-Seite</a>
+      <a href="${BACK_PATH}">Zurück zur Newsletter-Seite</a>
     </main>
   </body>
 </html>`;
@@ -101,7 +101,7 @@ exports.handler = async function handler(event) {
       headers: { "Content-Type": "text/html; charset=utf-8" },
       body: renderMessagePage(
         "Newsletter derzeit nicht erreichbar",
-        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es spaeter erneut."
+        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es später erneut."
       )
     };
   }
@@ -138,7 +138,7 @@ exports.handler = async function handler(event) {
         headers: { "Content-Type": "text/html; charset=utf-8" },
         body: renderMessagePage(
           "Newsletter derzeit nicht erreichbar",
-          "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es spaeter erneut."
+          "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es später erneut."
         )
       };
     }

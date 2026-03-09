@@ -46,7 +46,7 @@ function renderMessagePage(title, message) {
     <main>
       <h1>${title}</h1>
       <p>${message}</p>
-      <a href="${BACK_PATH}">Zurueck zur Newsletter-Seite</a>
+      <a href="${BACK_PATH}">Zurück zur Newsletter-Seite</a>
     </main>
   </body>
 </html>`;
@@ -103,7 +103,7 @@ exports.handler = async function handler(event) {
       headers: { "Content-Type": "text/html; charset=utf-8" },
       body: renderMessagePage(
         "Newsletter derzeit nicht erreichbar",
-        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es spaeter erneut."
+        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es später erneut."
       )
     };
   }
@@ -116,7 +116,7 @@ exports.handler = async function handler(event) {
       headers: { "Content-Type": "text/html; charset=utf-8" },
       body: renderMessagePage(
         "Newsletter-Anmeldung fehlgeschlagen",
-        "Die Anmeldung konnte nicht verarbeitet werden. Bitte versuche es spaeter erneut."
+        "Die Anmeldung konnte nicht verarbeitet werden. Bitte versuche es später erneut."
       )
     };
   }
@@ -126,7 +126,7 @@ exports.handler = async function handler(event) {
     headers: { "Content-Type": "text/html; charset=utf-8" },
     body: renderMessagePage(
       "Newsletter-Anmeldung erfolgreich",
-      "Danke. Deine E-Mail wurde fuer den Newsletter eingetragen."
+      "Danke. Deine E-Mail wurde für den Newsletter eingetragen."
     )
   };
 };
