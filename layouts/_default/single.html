@@ -29,6 +29,12 @@
       {{ .Content }}
     </div>
 
+{{ if eq .Params.form "liturgical_report" }}
+  <div class="not-prose my-6">
+    {{ partial "liturgical-report-form.html" . }}
+  </div>
+{{ end }}
+
     {{ if .Params.documents_list }}
       {{ $docs := where .Site.RegularPages "Section" "documents" }}
       {{ $docs = sort $docs "Date" "desc" }}
@@ -63,7 +69,7 @@
             {{ end }}
           </ul>
         {{ else }}
-          <p class="text-slate-600">Derzeit sind noch keine Dokumente veroeffentlicht.</p>
+          <p class="text-slate-600">Derzeit sind noch keine Dokumente veröffentlicht.</p>
         {{ end }}
       </section>
     {{ end }}

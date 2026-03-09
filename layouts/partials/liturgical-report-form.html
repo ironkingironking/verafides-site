@@ -1,0 +1,94 @@
+<form class="space-y-4 not-prose" method="POST" action="/api/contact" accept-charset="UTF-8" id="liturgical-report-form">
+  <input type="hidden" name="ts" value="{{ now.Unix }}">
+
+  <div class="hidden">
+    <label>Bitte leer lassen: <input name="website" autocomplete="off"></label>
+  </div>
+
+  <input type="hidden" name="subject" value="Meldung liturgische Missbräuche">
+  <input type="hidden" name="report_type" value="liturgical-abuse">
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <div>
+      <label class="block text-sm font-medium mb-1" for="report-first-name">Vorname</label>
+      <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-first-name" name="first_name" required>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1" for="report-last-name">Name</label>
+      <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-last-name" name="last_name" required>
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="report-email">E-Mail</label>
+    <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-email" name="email" type="email" required>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <div>
+      <label class="block text-sm font-medium mb-1" for="report-address">Adresse (optional)</label>
+      <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-address" name="address">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium mb-1" for="report-phone">Telefon (optional)</label>
+      <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-phone" name="phone" type="tel">
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="report-message">Sachverhalt</label>
+    <textarea class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-message" name="message" rows="8" required></textarea>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="report-share-permission">Darf Vera Fides Ihre Personalien an weitere Stellen weitergeben?</label>
+    <select class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-share-permission" name="share_permission" required>
+      <option value="" selected disabled>Bitte wählen</option>
+      <option value="Ja, Vera Fides darf meine Personalien an weitere Stellen weitergeben.">Ja, Weitergabe ist erlaubt</option>
+      <option value="Nein, die Meldung soll anonym weitergegeben werden.">Nein, bitte anonym melden</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="report-reported-elsewhere">Haben Sie den Sachverhalt bereits an eine andere Stelle gemeldet?</label>
+    <select class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-reported-elsewhere" name="reported_elsewhere" required>
+      <option value="" selected disabled>Bitte wählen</option>
+      <option value="ja">Ja</option>
+      <option value="nein">Nein</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1" for="report-outcome">Falls ja: Was war das Ergebnis Ihrer bisherigen Meldung?</label>
+    <textarea class="w-full rounded-lg border border-slate-300 px-3 py-2" id="report-outcome" name="reported_outcome" rows="5"></textarea>
+  </div>
+
+  {{ partial "turnstile-widget.html" . }}
+
+  <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" type="submit">
+    Meldung senden
+  </button>
+</form>
+
+<script>
+  (function () {
+    const elsewhere = document.getElementById("report-reported-elsewhere");
+    const outcome = document.getElementById("report-outcome");
+    if (!elsewhere || !outcome) return;
+
+    const toggleOutcomeRequired = function () {
+      const required = elsewhere.value === "ja";
+      outcome.required = required;
+      if (required) {
+        outcome.setAttribute("placeholder", "Bitte schildern Sie kurz, was daraus wurde.");
+      } else {
+        outcome.removeAttribute("placeholder");
+      }
+    };
+
+    elsewhere.addEventListener("change", toggleOutcomeRequired);
+    toggleOutcomeRequired();
+  })();
+</script>

@@ -3,4 +3,4 @@ title: "Teilaustritt"
 type: "pages"
 url: "/aktuelles/teilaustritt/"
 ---
-Infos und Unterlagen zum Teilaustritt.
+Wir haben eine eigene Projektwebseite zu diesem Thema lanciert: www.teilaustritt.ch
