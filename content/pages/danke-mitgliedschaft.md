@@ -1,5 +1,5 @@
 ---
-title: "Danke fuer deine Mitgliedschaftsanfrage"
+title: "Danke für deine Mitgliedschaftsanfrage"
 type: "pages"
 url: "/danke/mitgliedschaft/"
 ---

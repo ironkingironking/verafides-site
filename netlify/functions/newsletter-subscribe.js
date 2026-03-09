@@ -46,7 +46,7 @@ function renderMessagePage(title, message) {
     <main>
       <h1>${title}</h1>
       <p>${message}</p>
-      <a href="${BACK_PATH}">Zurueck zur Newsletter-Seite</a>
+      <a href="${BACK_PATH}">Zurück zur Newsletter-Seite</a>
     </main>
   </body>
 </html>`;
@@ -85,20 +85,40 @@ exports.handler = async function handler(event) {
     return { statusCode: 400, body: "Email is required." };
   }
 
-  const response = await fetch(`${listmonkUrl}/api/public/subscription`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email,
-      name: name || undefined,
-      list_uuids: listUuids
-    })
-  });
+  let response;
+  try {
+    response = await fetch(`${listmonkUrl}/api/public/subscription`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        name: name || undefined,
+        list_uuids: listUuids
+      })
+    });
+  } catch (error) {
+    console.error("[newsletter-subscribe] listmonk request failed:", error);
+    return {
+      statusCode: 502,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+      body: renderMessagePage(
+        "Newsletter derzeit nicht erreichbar",
+        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es später erneut."
+      )
+    };
+  }
 
   if (!response.ok) {
     const details = await response.text();
     console.error("[newsletter-subscribe] listmonk error:", response.status, details);
-    return { statusCode: 502, body: "Newsletter signup failed." };
+    return {
+      statusCode: 502,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+      body: renderMessagePage(
+        "Newsletter-Anmeldung fehlgeschlagen",
+        "Die Anmeldung konnte nicht verarbeitet werden. Bitte versuche es später erneut."
+      )
+    };
   }
 
   return {
@@ -106,7 +126,7 @@ exports.handler = async function handler(event) {
     headers: { "Content-Type": "text/html; charset=utf-8" },
     body: renderMessagePage(
       "Newsletter-Anmeldung erfolgreich",
-      "Danke. Deine E-Mail wurde fuer den Newsletter eingetragen."
+      "Danke. Deine E-Mail wurde für den Newsletter eingetragen."
     )
   };
 };

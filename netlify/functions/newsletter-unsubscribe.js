@@ -46,7 +46,7 @@ function renderMessagePage(title, message) {
     <main>
       <h1>${title}</h1>
       <p>${message}</p>
-      <a href="${BACK_PATH}">Zurueck zur Newsletter-Seite</a>
+      <a href="${BACK_PATH}">Zurück zur Newsletter-Seite</a>
     </main>
   </body>
 </html>`;
@@ -89,9 +89,22 @@ exports.handler = async function handler(event) {
 
   const query = `subscribers.email = '${escapeSqlString(email)}'`;
   const lookupUrl = `${listmonkUrl}/api/subscribers?per_page=100&query=${encodeURIComponent(query)}`;
-  const lookupResponse = await fetch(lookupUrl, {
-    headers: { Authorization: authHeader(username, token) }
-  });
+  let lookupResponse;
+  try {
+    lookupResponse = await fetch(lookupUrl, {
+      headers: { Authorization: authHeader(username, token) }
+    });
+  } catch (error) {
+    console.error("[newsletter-unsubscribe] lookup request failed:", error);
+    return {
+      statusCode: 502,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+      body: renderMessagePage(
+        "Newsletter derzeit nicht erreichbar",
+        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es später erneut."
+      )
+    };
+  }
 
   if (!lookupResponse.ok) {
     const details = await lookupResponse.text();
@@ -104,18 +117,31 @@ exports.handler = async function handler(event) {
   const ids = results.map((row) => row?.id).filter((id) => Number.isInteger(id));
 
   if (ids.length > 0) {
-    const batchResponse = await fetch(`${listmonkUrl}/api/subscribers/lists`, {
-      method: "PUT",
-      headers: {
-        Authorization: authHeader(username, token),
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        ids,
-        action: "unsubscribe",
-        target_list_ids: [listId]
-      })
-    });
+    let batchResponse;
+    try {
+      batchResponse = await fetch(`${listmonkUrl}/api/subscribers/lists`, {
+        method: "PUT",
+        headers: {
+          Authorization: authHeader(username, token),
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          ids,
+          action: "unsubscribe",
+          target_list_ids: [listId]
+        })
+      });
+    } catch (error) {
+      console.error("[newsletter-unsubscribe] update request failed:", error);
+      return {
+        statusCode: 502,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+        body: renderMessagePage(
+          "Newsletter derzeit nicht erreichbar",
+          "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es später erneut."
+        )
+      };
+    }
 
     if (!batchResponse.ok) {
       const details = await batchResponse.text();
