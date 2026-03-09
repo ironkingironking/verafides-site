@@ -99,7 +99,10 @@ exports.handler = async function handler(event) {
   const payload = parseFormBody(event.body, contentType);
 
   const subject = (payload.subject || "Kontaktanfrage").trim();
-  const isMembershipRequest = subject.toLowerCase().includes("mitglied");
+  const normalizedSubject = subject.toLowerCase();
+  const isMembershipRequest = normalizedSubject.includes("mitglied");
+  const isAbuseReport = payload.report_type === "liturgical-abuse" ||
+    (normalizedSubject.includes("liturg") && normalizedSubject.includes("missbrauch"));
 
   if (payload.website) {
     return {
@@ -109,15 +112,29 @@ exports.handler = async function handler(event) {
     };
   }
 
-  const name = (payload.name || "").trim();
+  const firstName = (payload.first_name || "").trim();
+  const lastName = (payload.last_name || "").trim();
+  const derivedName = [firstName, lastName].filter(Boolean).join(" ").trim();
+  const name = (payload.name || derivedName).trim();
   const email = (payload.email || "").trim();
   const message = (payload.message || "").trim();
   const eventName = (payload.event || "").trim();
   const address = (payload.address || "").trim();
+  const phone = (payload.phone || "").trim();
+  const sharePermission = (payload.share_permission || "").trim();
+  const reportedElsewhere = (payload.reported_elsewhere || "").trim();
+  const reportedOutcome = (payload.reported_outcome || "").trim();
   const membershipType = (payload.membership_type || "").trim();
   const turnstileToken = payload["cf-turnstile-response"];
 
-  if (!name || !email) {
+  if (isAbuseReport) {
+    if (!firstName || !lastName || !email || !message || !sharePermission || !reportedElsewhere) {
+      return { statusCode: 400, body: "Missing required report fields." };
+    }
+    if (reportedElsewhere === "ja" && !reportedOutcome) {
+      return { statusCode: 400, body: "Please add the outcome for previous reports." };
+    }
+  } else if (!name || !email) {
     return { statusCode: 400, body: "Name and email are required." };
   }
 
@@ -126,14 +143,14 @@ exports.handler = async function handler(event) {
   const isLocalRequest = isLocalHostRequest(event);
   const hasTurnstileSecret = Boolean(process.env.TURNSTILE_SECRET_KEY);
 
-  // Policy: locally optional, in production mandatory.
+  // Captcha validation is enabled when TURNSTILE_SECRET_KEY is configured.
+  // If it's missing, keep the form operational and log a warning.
   if (!isEventRegistration) {
-    if (inProduction && !hasTurnstileSecret) {
-      console.error("[contact] TURNSTILE_SECRET_KEY missing in production.");
-      return { statusCode: 500, body: "Captcha config missing." };
-    }
-
-    if ((inProduction || (!isLocalRequest && hasTurnstileSecret)) && hasTurnstileSecret) {
+    if (!hasTurnstileSecret) {
+      if (inProduction) {
+        console.warn("[contact] TURNSTILE_SECRET_KEY missing in production; skipping captcha check.");
+      }
+    } else if (inProduction || !isLocalRequest) {
       const isValidCaptcha = await verifyTurnstile(
         turnstileToken,
         event.headers["x-forwarded-for"]
@@ -144,27 +161,42 @@ exports.handler = async function handler(event) {
     }
   }
 
-  const finalSubject = isEventRegistration ? `Anmeldung: ${eventName || "Veranstaltung"}` : subject;
+  const finalSubject = isEventRegistration
+    ? `Anmeldung: ${eventName || "Veranstaltung"}`
+    : isAbuseReport
+      ? (subject || "Meldung liturgische Missbraeuche")
+      : subject;
+
   const to = process.env.CONTACT_TO_EMAIL || DEFAULT_TO_EMAIL;
 
-  const safeName = escapeHtml(name);
+  const safeName = escapeHtml(name || "(nicht angegeben)");
+  const safeFirstName = escapeHtml(firstName || "(nicht angegeben)");
+  const safeLastName = escapeHtml(lastName || "(nicht angegeben)");
   const safeEmail = escapeHtml(email);
   const safeMessage = escapeHtml(message || "(keine Bemerkung)");
   const safeEvent = escapeHtml(eventName || "(nicht angegeben)");
   const safeAddress = escapeHtml(address || "(nicht angegeben)");
+  const safePhone = escapeHtml(phone || "(nicht angegeben)");
+  const safeSharePermission = escapeHtml(sharePermission || "(nicht angegeben)");
+  const safeReportedElsewhere = escapeHtml(reportedElsewhere || "(nicht angegeben)");
+  const safeReportedOutcome = escapeHtml(reportedOutcome || "(nicht angegeben)");
   const safeMembershipType = escapeHtml(membershipType || "(nicht angegeben)");
 
   const html = isEventRegistration
     ? `<h2>Neue Veranstaltungsanmeldung</h2>\n<p><strong>Name:</strong> ${safeName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Event:</strong> ${safeEvent}</p>\n<p><strong>Bemerkung:</strong><br>${safeMessage}</p>`
     : isMembershipRequest
       ? `<h2>Neue Mitgliedschaftsanfrage</h2>\n<p><strong>Name:</strong> ${safeName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Mitgliedschaft:</strong> ${safeMembershipType}<br>\n<strong>Adresse:</strong> ${safeAddress}</p>\n<p><strong>Nachricht:</strong><br>${safeMessage}</p>`
-      : `<h2>Neue Kontaktanfrage</h2>\n<p><strong>Name:</strong> ${safeName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Betreff:</strong> ${escapeHtml(subject)}</p>\n<p><strong>Nachricht:</strong><br>${safeMessage}</p>`;
+      : isAbuseReport
+        ? `<h2>Neue Meldung: Liturgische Missbraeuche</h2>\n<p><strong>Vorname:</strong> ${safeFirstName}<br>\n<strong>Name:</strong> ${safeLastName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Adresse:</strong> ${safeAddress}<br>\n<strong>Telefon:</strong> ${safePhone}</p>\n<p><strong>Sachverhalt:</strong><br>${safeMessage}</p>\n<p><strong>Weitergabe der Personalien:</strong><br>${safeSharePermission}</p>\n<p><strong>Bereits an andere Stelle gemeldet:</strong><br>${safeReportedElsewhere}</p>\n<p><strong>Ergebnis der bisherigen Meldung:</strong><br>${safeReportedOutcome}</p>`
+        : `<h2>Neue Kontaktanfrage</h2>\n<p><strong>Name:</strong> ${safeName}<br>\n<strong>E-Mail:</strong> ${safeEmail}<br>\n<strong>Betreff:</strong> ${escapeHtml(subject)}</p>\n<p><strong>Nachricht:</strong><br>${safeMessage}</p>`;
 
   const text = isEventRegistration
     ? `Neue Veranstaltungsanmeldung\n\nName: ${name}\nE-Mail: ${email}\nEvent: ${eventName || "-"}\nBemerkung: ${message || "-"}`
     : isMembershipRequest
       ? `Neue Mitgliedschaftsanfrage\n\nName: ${name}\nE-Mail: ${email}\nMitgliedschaft: ${membershipType || "-"}\nAdresse: ${address || "-"}\nNachricht: ${message || "-"}`
-      : `Neue Kontaktanfrage\n\nName: ${name}\nE-Mail: ${email}\nBetreff: ${subject}\nNachricht: ${message || "-"}`;
+      : isAbuseReport
+        ? `Neue Meldung: Liturgische Missbraeuche\n\nVorname: ${firstName}\nName: ${lastName}\nE-Mail: ${email}\nAdresse: ${address || "-"}\nTelefon: ${phone || "-"}\n\nSachverhalt:\n${message || "-"}\n\nWeitergabe der Personalien:\n${sharePermission || "-"}\n\nBereits an andere Stelle gemeldet:\n${reportedElsewhere || "-"}\n\nErgebnis der bisherigen Meldung:\n${reportedOutcome || "-"}`
+        : `Neue Kontaktanfrage\n\nName: ${name}\nE-Mail: ${email}\nBetreff: ${subject}\nNachricht: ${message || "-"}`;
 
   try {
     await sendViaResend({

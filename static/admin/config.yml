@@ -8,6 +8,9 @@ backend:
   name: github
   repo: ironkingironking/verafides-site
   branch: main
+  base_url: https://verafides-site.vercel.app
+  auth_endpoint: api/cms/auth
+  auth_scope: repo
 
 media_folder: "static/uploads"
 public_folder: "/uploads"

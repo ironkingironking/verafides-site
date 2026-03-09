@@ -85,20 +85,40 @@ exports.handler = async function handler(event) {
     return { statusCode: 400, body: "Email is required." };
   }
 
-  const response = await fetch(`${listmonkUrl}/api/public/subscription`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email,
-      name: name || undefined,
-      list_uuids: listUuids
-    })
-  });
+  let response;
+  try {
+    response = await fetch(`${listmonkUrl}/api/public/subscription`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        name: name || undefined,
+        list_uuids: listUuids
+      })
+    });
+  } catch (error) {
+    console.error("[newsletter-subscribe] listmonk request failed:", error);
+    return {
+      statusCode: 502,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+      body: renderMessagePage(
+        "Newsletter derzeit nicht erreichbar",
+        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es spaeter erneut."
+      )
+    };
+  }
 
   if (!response.ok) {
     const details = await response.text();
     console.error("[newsletter-subscribe] listmonk error:", response.status, details);
-    return { statusCode: 502, body: "Newsletter signup failed." };
+    return {
+      statusCode: 502,
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+      body: renderMessagePage(
+        "Newsletter-Anmeldung fehlgeschlagen",
+        "Die Anmeldung konnte nicht verarbeitet werden. Bitte versuche es spaeter erneut."
+      )
+    };
   }
 
   return {
