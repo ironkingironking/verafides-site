@@ -2,5 +2,8 @@
 title: "Liturgische Missbräuche"
 type: "pages"
 url: "/aktuelles/liturgische-missbraeuche/"
+form: "liturgical_report"
 ---
-Infos und Hinweise zu liturgischen Missbräuchen.
+Wenn Sie einen liturgischen Missbrauch melden möchten, können Sie das folgende Formular verwenden.
+
+Bitte beschreiben Sie den Sachverhalt so konkret wie möglich.
