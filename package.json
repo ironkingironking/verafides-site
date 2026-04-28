@@ -1,6 +1,11 @@
 {
   "name": "verafides-site",
   "private": true,
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.22.1",
+    "nodemailer": "^6.10.1"
+  },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
     "hugo-bin": "^0.149.2",

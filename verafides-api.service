@@ -1,0 +1,19 @@
+[Unit]
+Description=Verafides API server (Express)
+After=network.target
+
+[Service]
+Type=simple
+User=ironking
+Group=ironking
+WorkingDirectory=/home/ironking/verafides-site
+EnvironmentFile=/home/ironking/verafides-site/.env
+ExecStart=/usr/bin/node api/server.js
+Restart=on-failure
+RestartSec=5
+# Harden the process a little
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
