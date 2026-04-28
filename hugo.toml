@@ -1,6 +1,6 @@
 buildFuture = true
 
-baseURL = "http://localhost:1313/"
+baseURL = "https://verafides.ch/"
 languageCode = "de-ch"
 title = "Verafides"
 enableRobotsTXT = true
