@@ -1,0 +1,30 @@
+name: Deploy Verafides
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "api/**"
+      - "assets/**"
+      - "content/**"
+      - "hugo.toml"
+      - "layouts/**"
+      - "package-lock.json"
+      - "package.json"
+      - "static/**"
+      - "tailwind.config.js"
+      - "vercel.json"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger Verafides deploy
+        run: |
+          curl -fsS -X POST \
+            -H 'Content-Type: application/json' \
+            -H 'X-GitHub-Event: push' \
+            -d '{"ref":"refs/heads/main","deleted":false,"repository":{"full_name":"ironkingironking/verafides-site"}}' \
+            'https://verafides.ch/api/deploy/verafides/b9533633fb9c78910a682b735cd84eb42289c1f9a87f8604'
