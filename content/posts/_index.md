@@ -1,4 +1,0 @@
----
-title: "Aktuelles"
-url: "/aktuelles/"
----
