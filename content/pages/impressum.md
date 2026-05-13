@@ -1,12 +1,9 @@
 ---
-title: "Impressum"
+title: Impressum
 ---
-Angaben gemäss den geltenden gesetzlichen Vorgaben:
+Verein Vera Fides
+c/o Davor Novakovic 
+Neufeldstrasse 3
+CH-3012 Bern
 
-Verantwortlich für den Inhalt dieser Website ist der Verein Vera Fides.
-
-Kontakt:
-- E-Mail: `redaktion@verafides.ch`
-- Website: `https://verafides.ch`
-
-Weitere rechtliche Angaben und vollständige Adressdaten werden auf dieser Seite ergänzt.
+E-Mail: redaktion@verafides.ch
