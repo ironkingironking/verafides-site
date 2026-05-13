@@ -6,5 +6,7 @@ draft: false
 Die alten Artikel finden Sie ab sofort hier: 
 
 https://web.archive.org/web/20260428193331/https://verafides.ch/
+
+
 \
 In den nächsten Tagen und Wochen wird diese Webseite laufend mit neuem Inhalt gefüllt.
