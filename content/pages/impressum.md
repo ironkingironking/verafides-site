@@ -1,14 +1,12 @@
 ---
 title: Impressum
+documents_list: false
 ---
 Verein Vera Fides
 
-
 c/o Davor Novakovic 
 
-
 Neufeldstrasse 3
-
 
 CH-3012 Bern
 
