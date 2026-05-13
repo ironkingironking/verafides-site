@@ -7,3 +7,5 @@ Neufeldstrasse 3
 CH-3012 Bern
 
 E-Mail: redaktion@verafides.ch
+
+Test
