@@ -1,9 +1,8 @@
 ---
-title: "Spenden"
-type: "pages"
-url: "/unterstuetzen/spenden/"
+title: Spenden
+url: /unterstuetzen/spenden/
+type: pages
 ---
-Mit deiner Spende unterstützt du unsere Arbeit direkt und wirkungsvoll.
 
 Wir setzen Spenden transparent für Aufklärung, Projekte und Vereinsarbeit ein.
 
@@ -12,11 +11,10 @@ Wir setzen Spenden transparent für Aufklärung, Projekte und Vereinsarbeit ein.
 Du kannst einmalig oder regelmässig per Banküberweisung spenden.
 Bitte nutze dafür folgende Angaben:
 
-- Kontoinhaber: `Vera Fides` (anpassen)
+- Kontoinhaber: Vera Fides
 - Bank: `Bankname` (anpassen)
-- IBAN: `CH00 0000 0000 0000 0000 0` (anpassen)
-- BIC/SWIFT: `XXXXXXXX` (optional)
-- Verwendungszweck: `Spende Vera Fides`
+- IBAN: CH68 0900 0000 1624 8197 3
+- Verwendungszweck: Spende Vera Fides
 
 ## Regelmässig unterstützen
 
@@ -25,4 +23,4 @@ Schon kleine regelmässige Beiträge geben uns Planungssicherheit.
 
 ## Herzlichen Dank
 
-Jeder Beitrag zählt. Danke für deine Unterstützung.
+
