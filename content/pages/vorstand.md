@@ -3,18 +3,23 @@ title: Vorstand
 url: /ueber/vorstand/
 type: pages
 ---
-Der Vorstand trägt die strategische und organisatorische Verantwortung für Vera Fides.
+Der Vorstand trägt die strategische und organisatorische Verantwortung für den Verein Vera Fides.
 
-Er stellt sicher, dass die Vereinsziele umgesetzt werden und die Mittel transparent und zweckgebunden eingesetzt werden.
+Er sorgt dafür, dass die Vereinsziele konsequent verfolgt und die verfügbaren Mittel transparent, verantwortungsvoll und zweckgebunden eingesetzt werden.
 
-Aktuell setzt sich der Vorstand wie folgt zusammen:
+Der Vorstand setzt sich aktuell wie folgt zusammen:
 
-Davor Novakovic (Gründer und Präsident)
+**Davor Novakovic**
+Gründer und Präsident
 
-Daniel Ric (Vizepräsident)
+**Daniel Ric**
+Vizepräsident
 
-Pavao Barac (Öffentlichkeitsarbeit)
+**Pavao Barac**
+Öffentlichkeitsarbeit
 
-Alexander Schmid (Juristische Fragen und Webmaster)
+**Alexander Schmid**
+Juristische Fragen und Webmaster
 
-Yvonne Reichlin (Sekretariat)
+**Yvonne Reichlin**
+Sekretariat
