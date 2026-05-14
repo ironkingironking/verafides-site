@@ -7,4 +7,4 @@ Das Projekt Teilaustritt begleitet Menschen, die sich differenziert mit ihrer Zu
 
 Auf der Projektseite findest du Hintergrundinformationen, praktische Hinweise und weiterführende Materialien.
 
-Zur Webseite: [www.teilaustritt.ch](https://www.teilaustritt.ch)
+Zur Webseite: <a href="https://www.teilaustritt.ch" target="_blank" rel="noopener noreferrer">www.teilaustritt<span>.ch</span></a>
