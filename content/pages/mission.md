@@ -1,14 +1,21 @@
 ---
-title: "Mission"
-type: "pages"
-url: "/ueber/mission/"
+title: Unsere Mission
+url: /ueber/mission/
+slug: Vera Fides hat die Mission, den katholischen Glauben in Treue zur Kirche
+  zu bekennen, zu vertiefen und weiterzugeben. Wir schaffen eine Plattform für
+  Glaubensverkündigung, katholische Bildung, Vernetzung und öffentliche
+  Mitgestaltung — damit die Wahrheit, Schönheit und Kraft des katholischen
+  Glaubens auch heute sichtbar bleibt.
+type: pages
 ---
-Unsere Mission ist es, Orientierung zu geben, Missstände klar zu benennen und konstruktive Lösungen sichtbar zu machen.
+**Vera Fides** steht für den katholischen Glauben in seiner ganzen Wahrheit, Schönheit und Tiefe. Unsere Mission ist es, den Glauben nicht nur zu bewahren, sondern ihn neu sichtbar, verständlich und fruchtbar zu machen — in Kirche, Gesellschaft und öffentlichem Leben.
 
-Wir arbeiten dabei auf drei Ebenen:
+Wir wollen Katholiken stärken, die ihren Glauben bewusst leben, bekennen und weitergeben möchten. In einer Zeit der Orientierungslosigkeit, religiösen Verflachung und gesellschaftlichen Umbrüche setzen wir uns dafür ein, dass die Stimme des überlieferten katholischen Glaubens hörbar bleibt: klar, wahrhaftig, respektvoll und mutig.
 
-- Aufklärung: Wir bereiten komplexe Themen verständlich und sorgfältig auf.
-- Verantwortung: Wir fördern Transparenz und eine Kultur der Rechenschaft.
-- Erneuerung: Wir unterstützen Initiativen, die dem kirchlichen Leben konkret dienen.
+Vera Fides versteht sich als Plattform für Glaubensverkündigung, Vernetzung und katholische Bildung. Wir fördern den Austausch zwischen lehramtstreuen Katholiken, unterstützen Initiativen der Neuevangelisierung und möchten Räume schaffen, in denen Glaube, Vernunft und Tradition miteinander ins Gespräch kommen.
 
-Vera Fides steht für eine sachliche, faire und menschennahe Kommunikation.
+Unsere Arbeit richtet sich an Menschen, die den katholischen Glauben vertiefen, verstehen oder neu entdecken möchten. Dabei geht es uns nicht um Anpassung an den Zeitgeist, sondern um die treue Weitergabe dessen, was der Kirche anvertraut ist: die Wahrheit des Evangeliums, die Sakramente, die katholische Lehre und die geistliche Tradition der Kirche.
+
+Wir glauben, dass der katholische Glaube auch heute Orientierung, Hoffnung und Erneuerung schenken kann — für den einzelnen Menschen, für Familien, für die Kirche und für die Gesellschaft.
+
+**Unsere Mission ist es, den katholischen Glauben zu bekennen, zu erklären, zu verteidigen und weiterzugeben — in Treue zur Kirche und im Vertrauen auf Christus.**
