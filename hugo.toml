@@ -124,7 +124,7 @@ events = "/unterstuetzen/veranstaltungen/:year-:month-:day-:slug/"
     permalinkable = true
 
 [outputs]
-  page = ["HTML", "ICS"]
+  page = ["HTML"]
 
 [security]
   [security.funcs]
