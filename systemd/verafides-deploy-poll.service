@@ -1,0 +1,11 @@
+[Unit]
+Description=Deploy Verafides when origin/main changes
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=alexadmin
+Group=alexadmin
+WorkingDirectory=/var/www/verafides
+ExecStart=/var/www/verafides/scripts/deploy-if-changed.sh

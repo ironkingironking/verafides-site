@@ -1,0 +1,11 @@
+[Unit]
+Description=Poll GitHub for Verafides site changes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1min
+AccuracySec=15s
+Unit=verafides-deploy-poll.service
+
+[Install]
+WantedBy=timers.target

@@ -5,8 +5,7 @@ These files were kept for reference after moving verafides.ch to the GitHub-to-s
 Active flow:
 
 1. Decap CMS writes changes to `main` through the GitHub backend.
-2. `.github/workflows/verafides-deploy.yml` runs on pushes to `main`.
-3. The workflow calls `https://verafides.ch/api/deploy/verafides/$VERAFIDES_DEPLOY_TOKEN`.
-4. `api/server.js` updates `/var/www/verafides` with a fast-forward merge and rebuilds the Hugo site.
+2. The production server runs `systemd/verafides-deploy-poll.timer`.
+3. The timer calls `scripts/deploy-if-changed.sh`, which fast-forwards `/var/www/verafides` to `origin/main` and rebuilds Hugo.
 
 Archived files here are not used by the active production path. They are retained only to preserve history while keeping the project root focused on the current deployment setup.

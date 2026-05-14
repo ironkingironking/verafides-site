@@ -2,19 +2,6 @@ name: Deploy Verafides
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "api/**"
-      - "assets/**"
-      - "content/**"
-      - "hugo.toml"
-      - "layouts/**"
-      - "package-lock.json"
-      - "package.json"
-      - "static/**"
-      - "tailwind.config.js"
 
 jobs:
   deploy:
@@ -25,7 +12,10 @@ jobs:
         env:
           VERAFIDES_DEPLOY_TOKEN: ${{ secrets.VERAFIDES_DEPLOY_TOKEN }}
         run: |
-          test -n "$VERAFIDES_DEPLOY_TOKEN"
+          if [ -z "$VERAFIDES_DEPLOY_TOKEN" ]; then
+            echo "::notice::VERAFIDES_DEPLOY_TOKEN is not configured. Server-side polling deploy is active."
+            exit 0
+          fi
           curl -fsS -X POST \
             -H 'Content-Type: application/json' \
             -H 'X-GitHub-Event: push' \
