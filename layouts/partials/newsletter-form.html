@@ -1,29 +1,33 @@
 <div class="space-y-6 not-prose">
-  <form class="space-y-4 rounded-xl border border-slate-200 p-4 bg-slate-50" method="POST" action="/api/newsletter-subscribe" accept-charset="UTF-8">
+  <form class="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-5" method="POST" action="/api/newsletter-subscribe" accept-charset="UTF-8">
     <h2 class="text-lg font-semibold text-slate-900">Newsletter abonnieren</h2>
     <div class="hidden">
       <label>Bitte leer lassen: <input name="website" autocomplete="off"></label>
     </div>
     <div>
-      <label class="block text-sm font-medium mb-1" for="newsletter-name">Name (optional)</label>
+      <label class="block text-sm font-medium mb-1" for="newsletter-name">Vorname</label>
       <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="newsletter-name" name="name">
     </div>
     <div>
-      <label class="block text-sm font-medium mb-1" for="newsletter-email">E-Mail</label>
+      <label class="block text-sm font-medium mb-1" for="newsletter-email">E-Mail-Adresse</label>
       <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="newsletter-email" name="email" type="email" required>
     </div>
-    <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-100" type="submit">
-      Anmelden
+    <label class="flex gap-3 text-sm leading-6 text-slate-700">
+      <input class="mt-1 h-4 w-4 rounded border-slate-300" name="privacy" type="checkbox" required>
+      <span>Ich akzeptiere die <a class="underline underline-offset-4 hover:text-slate-900" href="/datenschutz/">Datenschutzerklärung</a>.</span>
+    </label>
+    <button class="rounded-lg bg-slate-900 px-4 py-2 font-medium text-white hover:bg-slate-700" type="submit">
+      Absenden
     </button>
   </form>
 
-  <form class="space-y-4 rounded-xl border border-slate-200 p-4" method="POST" action="/api/newsletter-unsubscribe" accept-charset="UTF-8">
+  <form class="space-y-4 rounded-xl border border-slate-200 p-5" method="POST" action="/api/newsletter-unsubscribe" accept-charset="UTF-8">
     <h2 class="text-lg font-semibold text-slate-900">Newsletter abbestellen</h2>
     <div class="hidden">
       <label>Bitte leer lassen: <input name="website" autocomplete="off"></label>
     </div>
     <div>
-      <label class="block text-sm font-medium mb-1" for="newsletter-unsub-email">E-Mail</label>
+      <label class="block text-sm font-medium mb-1" for="newsletter-unsub-email">E-Mail-Adresse</label>
       <input class="w-full rounded-lg border border-slate-300 px-3 py-2" id="newsletter-unsub-email" name="email" type="email" required>
     </div>
     <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" type="submit">

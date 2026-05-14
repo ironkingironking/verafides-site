@@ -1,4 +1,4 @@
-<form class="space-y-4 not-prose" method="POST" action="/api/contact" accept-charset="UTF-8">
+<form class="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-5 not-prose" method="POST" action="/api/contact" accept-charset="UTF-8">
   <input type="hidden" name="ts" value="{{ now.Unix }}">
 
   <div class="hidden">
@@ -42,7 +42,7 @@
 
   {{ partial "turnstile-widget.html" . }}
 
-  <button class="rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50" type="submit">
+  <button class="rounded-lg bg-slate-900 px-4 py-2 font-medium text-white hover:bg-slate-700" type="submit">
     Mitgliedschaft anfragen
   </button>
 </form>

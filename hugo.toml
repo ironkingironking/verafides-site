@@ -87,13 +87,13 @@ enableRobotsTXT = true
   url = "/kontakt/"
   weight = 30
 [[menu.main]]
-  name = "Unterstützen"
+  name = "Mitmachen"
   identifier = "unterstuetzen"
   url = "/unterstuetzen/"
   weight = 25
 
 [[menu.main]]
-  name = "Informiert bleiben"
+  name = "Newsletter"
   parent = "unterstuetzen"
   url = "/unterstuetzen/informiert-bleiben/"
   weight = 10

@@ -1,5 +1,5 @@
 {{ define "main" }}
-  <article class="space-y-6">
+  <article class="mx-auto max-w-3xl space-y-6">
     <header class="space-y-2">
       <h1 class="text-3xl font-semibold tracking-tight">{{ .Title }}</h1>
     </header>
@@ -14,6 +14,11 @@
     {{ partial "registration-form.html" . }}
   </div>
 {{ end }}
+
+    <div class="prose prose-slate max-w-none space-y-4 leading-relaxed">
+      {{ .Content }}
+    </div>
+
 {{ if eq .Params.form "newsletter" }}
   <div class="not-prose my-6">
     {{ partial "newsletter-form.html" . }}
@@ -24,10 +29,6 @@
     {{ partial "membership-form.html" . }}
   </div>
 {{ end }}
-
-    <div class="prose prose-slate max-w-none space-y-4 leading-relaxed">
-      {{ .Content }}
-    </div>
 
 {{ if eq .Params.form "liturgical_report" }}
   <div class="not-prose my-6">
@@ -72,6 +73,12 @@
           <p class="text-slate-600">Derzeit sind noch keine Dokumente veröffentlicht.</p>
         {{ end }}
       </section>
+    {{ end }}
+
+    {{ if and (ne .RelPermalink "/unterstuetzen/spenden/") (ne .RelPermalink "/impressum/") (ne .RelPermalink "/datenschutz/") (not (in .RelPermalink "/danke/")) }}
+      <div class="not-prose pt-4">
+        {{ partial "donation-cta.html" . }}
+      </div>
     {{ end }}
   </article>
 {{ end }}

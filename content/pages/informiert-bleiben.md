@@ -1,7 +1,7 @@
 ---
-title: "Informiert bleiben"
+title: "Newsletter"
 type: "pages"
 url: "/unterstuetzen/informiert-bleiben/"
 form: "newsletter"
 ---
-Melde dich hier für unseren Newsletter an oder ab.
+Erhalten Sie Hinweise zu Veranstaltungen, Stellungnahmen und Neuigkeiten von Vera Fides. Kein Spam. Abmeldung jederzeit möglich.

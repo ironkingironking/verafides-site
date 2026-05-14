@@ -1,14 +1,14 @@
 ---
-title: "Unterstützen"
+title: "Mitmachen"
 type: "pages"
 url: "/unterstuetzen/"
 ---
 Vera Fides lebt von Menschen, die unsere Arbeit mittragen.
 
-Du kannst uns auf verschiedene Weise unterstützen:
+Sie können uns auf verschiedene Weise unterstützen:
 
-- Als Mitglied: Mit einer Mitgliedschaft stärkst du unsere Arbeit langfristig.
+- Als Mitglied: Mit einer Mitgliedschaft stärken Sie unsere Arbeit langfristig.
 - Mit einer Spende: Einmalig oder regelmässig, jeder Beitrag hilft.
-- Durch Vernetzung: Empfiehl unsere Inhalte weiter und bleibe im Austausch.
+- Durch Vernetzung: Empfehlen Sie unsere Inhalte weiter und bleiben Sie im Austausch.
 
-Auf den Unterseiten findest du alle Informationen zu Mitgliedschaft, Spenden und Newsletter.
+Auf den Unterseiten finden Sie alle Informationen zu Mitgliedschaft, Spenden und Newsletter.
