@@ -1,11 +1,7 @@
 ---
 title: Unsere Mission
 url: /ueber/mission/
-slug: Vera Fides hat die Mission, den katholischen Glauben in Treue zur Kirche
-  zu bekennen, zu vertiefen und weiterzugeben. Wir schaffen eine Plattform für
-  Glaubensverkündigung, katholische Bildung, Vernetzung und öffentliche
-  Mitgestaltung — damit die Wahrheit, Schönheit und Kraft des katholischen
-  Glaubens auch heute sichtbar bleibt.
+slug: ""
 type: pages
 ---
 **Vera Fides** steht für den katholischen Glauben in seiner ganzen Wahrheit, Schönheit und Tiefe. Unsere Mission ist es, den Glauben nicht nur zu bewahren, sondern ihn neu sichtbar, verständlich und fruchtbar zu machen — in Kirche, Gesellschaft und öffentlichem Leben.
