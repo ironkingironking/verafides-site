@@ -16,7 +16,8 @@
     "dev:hugo": "hugo server --port 1313",
     "tw:build": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --minify",
     "tw:watch": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --watch",
-    "build": "npm run tw:build && hugo --gc --minify",
+    "hugo:build": "node -r dotenv/config scripts/hugo-build.js",
+    "build": "npm run tw:build && npm run hugo:build",
     "vercel-build": "npm run build"
   }
 }

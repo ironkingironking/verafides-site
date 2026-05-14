@@ -5,6 +5,7 @@ require("dotenv").config();
 const express = require("express");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const { execFile } = require("child_process");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -17,26 +18,30 @@ app.use(express.json());
 // ── SMTP transport ────────────────────────────────────────────────────────────
 
 function createTransport() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "mail.verafides.ch",
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: process.env.SMTP_SECURE === "true",
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+  const host = process.env.SMTP_HOST || "mail.verafides.ch";
+  const port = Number(process.env.SMTP_PORT) || 587;
+  const secure = process.env.SMTP_SECURE === "true";
+  const transport = {
+    host,
+    port,
+    secure,
+  };
+
+  const smtpUser = String(process.env.SMTP_USER || "").trim();
+  const smtpPass = String(process.env.SMTP_PASS || "").trim();
+  if (smtpUser && smtpPass) {
+    transport.auth = {
+      user: smtpUser,
+      pass: smtpPass,
+    };
+  }
+
+  return nodemailer.createTransport(transport);
 }
 
 async function sendMail({ to, replyTo, subject, html, text }) {
-  const smtpUser = process.env.SMTP_USER;
-  if (!smtpUser) {
-    console.warn("[mail] SMTP_USER not set – logging email instead of sending.");
-    console.log({ to, replyTo, subject, text });
-    return;
-  }
-
-  const from = process.env.SMTP_FROM || `Verafides <${smtpUser}>`;
+  const fromUser = String(process.env.SMTP_USER || "").trim() || "noreply@verafides.ch";
+  const from = process.env.SMTP_FROM || `Verafides <${fromUser}>`;
   const transport = createTransport();
   await transport.sendMail({ from, to, replyTo, subject, html, text });
 }
@@ -93,6 +98,75 @@ function renderMessagePage(title, message, backPath = "/") {
 </html>`;
 }
 
+// ── /api/deploy/verafides/:token ─────────────────────────────────────────────
+
+let activeDeploy = null;
+
+function safeTokenEquals(left, right) {
+  const a = Buffer.from(String(left || ""), "utf8");
+  const b = Buffer.from(String(right || ""), "utf8");
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+function runCommand(command, args, options = {}) {
+  return new Promise((resolve, reject) => {
+    execFile(command, args, {
+      cwd: process.cwd(),
+      env: process.env,
+      maxBuffer: 1024 * 1024 * 2,
+      timeout: options.timeout || 120000,
+    }, (error, stdout, stderr) => {
+      if (error) {
+        error.stdout = stdout;
+        error.stderr = stderr;
+        reject(error);
+        return;
+      }
+      resolve({ stdout, stderr });
+    });
+  });
+}
+
+async function ensureCleanTrackedWorktree() {
+  await runCommand("git", ["diff", "--quiet"], { timeout: 30000 });
+  await runCommand("git", ["diff", "--cached", "--quiet"], { timeout: 30000 });
+}
+
+async function deployVerafidesSite() {
+  await ensureCleanTrackedWorktree();
+  await runCommand("git", ["fetch", "--prune", "origin", "main"], { timeout: 120000 });
+  await runCommand("git", ["merge", "--ff-only", "origin/main"], { timeout: 120000 });
+  await runCommand("npm", ["ci"], { timeout: 180000 });
+  await runCommand("npm", ["run", "build"], { timeout: 180000 });
+}
+
+app.post("/api/deploy/verafides/:token", async (req, res) => {
+  const expectedToken = process.env.VERAFIDES_DEPLOY_TOKEN;
+  if (!expectedToken || !safeTokenEquals(req.params.token, expectedToken)) {
+    return res.status(404).send("Not found");
+  }
+
+  const payload = req.body || {};
+  if (payload.deleted || payload.ref !== "refs/heads/main") {
+    return res.status(202).json({ ok: true, skipped: true });
+  }
+
+  if (activeDeploy) {
+    return res.status(409).json({ ok: false, error: "Deploy already running." });
+  }
+
+  activeDeploy = deployVerafidesSite();
+  try {
+    await activeDeploy;
+    res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error("[deploy] failed:", err.stderr || err.message);
+    res.status(500).json({ ok: false, error: "Deploy failed. Check service logs." });
+  } finally {
+    activeDeploy = null;
+  }
+});
+
 // ── /api/contact ──────────────────────────────────────────────────────────────
 
 const THANK_YOU_PATH = "/danke/";
@@ -141,15 +215,20 @@ app.post("/api/contact", async (req, res) => {
   }
 
   const isEventRegistration = Boolean(eventName);
+  const turnstileSiteKey = String(process.env.TURNSTILE_SITE_KEY || "").trim();
   const hasTurnstileSecret = Boolean(process.env.TURNSTILE_SECRET_KEY);
+  const turnstileEnabled =
+    hasTurnstileSecret &&
+    Boolean(turnstileSiteKey) &&
+    turnstileSiteKey !== "your_turnstile_site_key";
   const inProduction = (process.env.NODE_ENV || "").toLowerCase() === "production";
   const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").toLowerCase();
   const isLocalRequest = host.includes("localhost") || host.includes("127.0.0.1");
 
   if (!isEventRegistration) {
-    if (!hasTurnstileSecret && inProduction) {
+    if (!turnstileEnabled && inProduction) {
       console.warn("[contact] TURNSTILE_SECRET_KEY missing in production; skipping captcha check.");
-    } else if (hasTurnstileSecret && (inProduction || !isLocalRequest)) {
+    } else if (turnstileEnabled && (inProduction || !isLocalRequest)) {
       const ip = req.headers["x-forwarded-for"] || req.ip;
       const valid = await verifyTurnstile(turnstileToken, ip);
       if (!valid) return res.status(400).send("Captcha validation failed.");
@@ -287,7 +366,7 @@ app.post("/api/newsletter-subscribe", async (req, res) => {
 // ── /api/newsletter-unsubscribe ───────────────────────────────────────────────
 
 function authHeader(username, token) {
-  return `Basic ${Buffer.from(`${username}:${token}`, "utf8").toString("base64")}`;
+  return `token ${username}:${token}`;
 }
 
 function escapeSqlString(value) {
@@ -309,7 +388,7 @@ app.post("/api/newsletter-unsubscribe", async (req, res) => {
   const listId = Number.parseInt(process.env.LISTMONK_LIST_ID || "", 10);
 
   if (!listmonkUrl || !username || !token || !Number.isInteger(listId)) {
-    console.error("[newsletter-unsubscribe] Missing listmonk admin env vars.");
+    console.error("[newsletter-unsubscribe] Missing listmonk API env vars.");
     return res.status(500).send("Newsletter config missing.");
   }
 

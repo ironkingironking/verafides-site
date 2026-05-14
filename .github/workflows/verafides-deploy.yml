@@ -22,9 +22,12 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Trigger Verafides deploy
+        env:
+          VERAFIDES_DEPLOY_TOKEN: ${{ secrets.VERAFIDES_DEPLOY_TOKEN }}
         run: |
+          test -n "$VERAFIDES_DEPLOY_TOKEN"
           curl -fsS -X POST \
             -H 'Content-Type: application/json' \
             -H 'X-GitHub-Event: push' \
             -d '{"ref":"refs/heads/main","deleted":false,"repository":{"full_name":"ironkingironking/verafides-site"}}' \
-            'https://verafides.ch/api/deploy/verafides/b9533633fb9c78910a682b735cd84eb42289c1f9a87f8604'
+            "https://verafides.ch/api/deploy/verafides/$VERAFIDES_DEPLOY_TOKEN"

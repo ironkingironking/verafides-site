@@ -1,3 +1,5 @@
+name: verafides
+
 services:
   listmonk_db:
     image: postgres:16-alpine
@@ -17,7 +19,7 @@ services:
       retries: 20
 
   listmonk:
-    image: listmonk/listmonk:latest
+    image: listmonk/listmonk:v6.1.0
     restart: unless-stopped
     depends_on:
       listmonk_db:
@@ -44,4 +46,6 @@ services:
 
 volumes:
   listmonk_db_data:
+    name: verafides_listmonk_db_data
   listmonk_uploads:
+    name: verafides_listmonk_uploads

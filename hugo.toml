@@ -120,3 +120,7 @@ events = "/unterstuetzen/veranstaltungen/:year-:month-:day-:slug/"
 [security]
   [security.funcs]
     getenv = ['^HUGO_', '^CI$', '^TURNSTILE_SITE_KEY$']
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

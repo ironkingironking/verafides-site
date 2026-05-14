@@ -8,7 +8,7 @@ backend:
   name: github
   repo: ironkingironking/verafides-site
   branch: main
-  base_url: https://verafides-site.vercel.app
+  base_url: https://verafides.ch
   auth_endpoint: api/cms/auth
   auth_scope: repo
 
@@ -31,63 +31,48 @@ collections:
 
   - name: "pages"
     label: "Seiten"
+    folder: "content/pages"
+    create: true
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - { label: "Titel", name: "title", widget: "string", required: false }
+      - { label: "URL", name: "url", widget: "string", required: false }
+      - { label: "Slug", name: "slug", widget: "string", required: false }
+      - { label: "Typ", name: "type", widget: "string", required: false }
+      - { label: "Formular", name: "form", widget: "string", required: false }
+      - { label: "Kontaktformular", name: "contact_form", widget: "boolean", default: false, required: false }
+      - { label: "Dokumentliste", name: "documents_list", widget: "boolean", default: false, required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: "page_indexes"
+    label: "Seiten-Übersichten"
     editor:
       preview: false
     files:
       - label: "Startseite"
-        name: "home"
-        file: "content/pages/home.md"
+        name: "root"
+        file: "content/_index.md"
+        fields:
+          - { label: "Body", name: "body", widget: "markdown", required: false }
+
+      - label: "Aktuelles-Übersicht"
+        name: "aktuelles_index"
+        file: "content/posts/_index.md"
         fields:
           - { label: "Titel", name: "title", widget: "string" }
           - { label: "URL", name: "url", widget: "string", required: false }
-          - { label: "Typ", name: "type", widget: "string", default: "pages", required: false }
-          - { label: "Kontaktformular", name: "contact_form", widget: "boolean", default: false, required: false }
-          - { label: "Body", name: "body", widget: "markdown", required: false }
 
-      - label: "Kontakt"
-        name: "contact"
-        file: "content/pages/contact.md"
+      - label: "Dokumente-Übersicht"
+        name: "documents_index"
+        file: "content/documents/_index.md"
+        fields:
+          - { label: "Titel", name: "title", widget: "string" }
+
+      - label: "Veranstaltungen-Übersicht"
+        name: "events_index"
+        file: "content/events/_index.md"
         fields:
           - { label: "Titel", name: "title", widget: "string" }
           - { label: "URL", name: "url", widget: "string", required: false }
-          - { label: "Typ", name: "type", widget: "string", default: "pages", required: false }
-          - { label: "Kontaktformular", name: "contact_form", widget: "boolean", default: true, required: false }
-          - { label: "Body", name: "body", widget: "markdown", required: false }
-
-  - name: "documents"
-    label: "Dokumente"
-    folder: "content/documents"
-    create: true
-    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    editor:
-      preview: false
-    fields:
-      - { label: "Titel", name: "title", widget: "string" }
-      - { label: "Datum", name: "date", widget: "datetime" }
-      - { label: "Kurzbeschreibung", name: "summary", widget: "text", required: false }
-      - { label: "Datei", name: "file", widget: "file" }
-      - { label: "Entwurf", name: "draft", widget: "boolean", default: false, required: false }
-      - { label: "Body", name: "body", widget: "markdown", required: false }
-
-  - name: "events"
-    label: "Veranstaltungen"
-    folder: "content/events"
-
-    filter:
-      field: "is_index"
-      pattern: "^$"
-    create: true
-    path: "{{year}}-{{month}}-{{day}}-{{hour}}{{minute}}-{{slug}}"
-    editor:
-      preview: false
-    fields:
-      - { label: "Titel", name: "title", widget: "string" }
-      - { label: "Datum", name: "date", widget: "datetime" }
-      - { label: "Ort", name: "location", widget: "string", required: false }
-      - { label: "Kurztext", name: "summary", widget: "text", required: false }
-      - { label: "Entwurf", name: "draft", widget: "boolean", default: false, required: false }
-      - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Anmeldung aktiv", name: "registration_enabled", widget: "boolean", default: false, required: false }
-      - { label: "Hinweis zur Anmeldung", name: "registration_note", widget: "string", required: false }
-      - { label: "Anmelde-Link", name: "registration_url", widget: "string", required: false }
-      - { label: "Ende (optional)", name: "end", widget: "datetime", required: false }
