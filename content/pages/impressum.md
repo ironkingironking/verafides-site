@@ -3,12 +3,12 @@ title: Impressum
 summary: "Impressum des Vereins Vera Fides."
 documents_list: false
 ---
-Verein Vera Fides
-
-c/o Davor Novakovic 
-
-Neufeldstrasse 3
-
-CH-3012 Bern
-
-E-Mail: {{< protected-email >}}
+<div class="not-prose space-y-2">
+  <address class="not-italic leading-snug">
+    Verein Vera Fides<br>
+    c/o Davor Novakovic<br>
+    Neufeldstrasse 3<br>
+    CH-3012 Bern
+  </address>
+  <p class="leading-snug">E-Mail: {{< protected-email >}}</p>
+</div>
