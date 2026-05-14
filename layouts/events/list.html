@@ -12,7 +12,7 @@
     {{/* Kommende */}}
     {{ $upcoming := where .RegularPages "Date" ">=" $now | sort "Date" "asc" }}
     <div class="space-y-4">
-      <h2 class="text-xl font-semibold">Kommende Veranstaltungen</h2>
+      <h2 class="text-xl font-semibold">Kommende Termine</h2>
 
       {{ if gt (len $upcoming) 0 }}
         <ul class="space-y-3">
@@ -34,14 +34,14 @@
           {{ end }}
         </ul>
       {{ else }}
-        <p class="text-slate-600">Derzeit sind keine kommenden Veranstaltungen publiziert.</p>
+        <p class="text-slate-600">Derzeit sind keine kommenden Termine publiziert.</p>
       {{ end }}
     </div>
 
     {{/* Vergangene */}}
     {{ $past := where .RegularPages "Date" "<" $now | sort "Date" "desc" }}
     <div class="space-y-4">
-      <h2 class="text-xl font-semibold">Vergangene Veranstaltungen</h2>
+      <h2 class="text-xl font-semibold">Vergangene Termine</h2>
 
       {{ if gt (len $past) 0 }}
         <ul class="space-y-3">
@@ -72,9 +72,8 @@
           {{ end }}
         </ul>
       {{ else }}
-        <p class="text-slate-600">Noch keine vergangenen Veranstaltungen.</p>
+        <p class="text-slate-600">Noch keine vergangenen Termine.</p>
       {{ end }}
     </div>
   </section>
 {{ end }}
-

@@ -1,5 +1,5 @@
 ---
-title: "Veranstaltungen"
+title: "Termine"
 url: "/unterstuetzen/veranstaltungen/"
 type: "events"
 is_index: true
@@ -11,4 +11,4 @@ cascade:
     - ICS
 ---
 
-Hier finden Sie aktuelle Veranstaltungen von Vera Fides.
+Hier finden Sie aktuelle Termine von Vera Fides.

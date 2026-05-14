@@ -65,7 +65,7 @@ enableRobotsTXT = true
   weight = 10
 
 [[menu.main]]
-  name = "Veranstaltungen"
+  name = "Termine"
   parent = "aktuelles"
   url = "/unterstuetzen/veranstaltungen/"
   weight = 20

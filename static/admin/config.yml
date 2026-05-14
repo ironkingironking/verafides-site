@@ -70,7 +70,7 @@ collections:
         fields:
           - { label: "Titel", name: "title", widget: "string" }
 
-      - label: "Veranstaltungen-Übersicht"
+      - label: "Termine-Übersicht"
         name: "events_index"
         file: "content/events/_index.md"
         fields:
@@ -93,7 +93,7 @@ collections:
       - { label: "Body", name: "body", widget: "markdown", required: false }
 
   - name: "events"
-    label: "Veranstaltungen"
+    label: "Termine"
     folder: "content/events"
 
     filter:
