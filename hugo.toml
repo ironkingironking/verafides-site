@@ -67,7 +67,7 @@ enableRobotsTXT = true
 [[menu.main]]
   name = "Termine"
   parent = "aktuelles"
-  url = "/unterstuetzen/veranstaltungen/"
+  url = "/unterstuetzen/termine/"
   weight = 20
 
 [[menu.main]]
@@ -113,7 +113,7 @@ enableRobotsTXT = true
 [permalinks]
   posts = "/aktuelles/:year-:month-:day-:slug/"
   pages = "/:slug/"
-events = "/unterstuetzen/veranstaltungen/:year-:month-:day-:slug/"
+  events = "/unterstuetzen/termine/:year-:month-:day-:slug/"
 
 [outputFormats]
   [outputFormats.ICS]
