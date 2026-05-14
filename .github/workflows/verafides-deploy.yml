@@ -17,6 +17,10 @@ on:
       - "tailwind.config.js"
       - ".github/workflows/verafides-deploy.yml"
 
+concurrency:
+  group: verafides-production-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -36,8 +40,31 @@ jobs:
             echo "::error::VERAFIDES_DEPLOY_TOKEN is not configured."
             exit 1
           fi
-          curl -fsS -X POST \
-            -H 'Content-Type: application/json' \
-            -H 'X-GitHub-Event: push' \
-            -d '{"ref":"refs/heads/main","deleted":false,"repository":{"full_name":"ironkingironking/verafides-site"}}' \
-            "https://verafides.ch/api/deploy/verafides/$token"
+
+          url="https://verafides.ch/api/deploy/verafides/$token"
+          payload='{"ref":"refs/heads/main","deleted":false,"repository":{"full_name":"ironkingironking/verafides-site"}}'
+
+          for attempt in $(seq 1 12); do
+            response="$(curl -sS -w '\n%{http_code}' -X POST \
+              -H 'Content-Type: application/json' \
+              -H 'X-GitHub-Event: push' \
+              -d "$payload" \
+              "$url")"
+            status="$(printf '%s' "$response" | tail -n 1)"
+            body="$(printf '%s' "$response" | sed '$d')"
+
+            if [ "$status" -ge 200 ] && [ "$status" -lt 300 ]; then
+              printf '%s\n' "$body"
+              exit 0
+            fi
+
+            if [ "$status" = "409" ] && [ "$attempt" -lt 12 ]; then
+              echo "Deploy already running; retrying in 10 seconds..."
+              sleep 10
+              continue
+            fi
+
+            echo "$body"
+            echo "::error::Deploy endpoint returned HTTP $status."
+            exit 1
+          done
