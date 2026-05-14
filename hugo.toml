@@ -53,6 +53,12 @@ enableRobotsTXT = true
   weight = 40
 
 [[menu.main]]
+  name = "Häufige Fragen"
+  parent = "ueber"
+  url = "/faq/"
+  weight = 50
+
+[[menu.main]]
   name = "Aktuelles"
   identifier = "aktuelles"
   url = "/aktuelles/"
