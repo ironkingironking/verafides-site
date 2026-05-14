@@ -16,6 +16,9 @@ enableRobotsTXT = true
 [pagination]
   pagerSize = 10
 
+[params.social]
+  facebook = "https://www.facebook.com/people/Vera-Fides/"
+  youtube = "https://www.youtube.com/@VereinVeraFides"
 
 # (Optional) Menüs
 [menu]
