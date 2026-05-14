@@ -26,7 +26,13 @@ jobs:
         env:
           VERAFIDES_DEPLOY_TOKEN: ${{ secrets.VERAFIDES_DEPLOY_TOKEN }}
         run: |
-          if [ -z "$VERAFIDES_DEPLOY_TOKEN" ]; then
+          token="$(printf '%s' "$VERAFIDES_DEPLOY_TOKEN" | sed -E 's/^[[:space:]]*VERAFIDES_DEPLOY_TOKEN=//; s/^[[:space:]]+//; s/[[:space:]]+$//' | tr -d '\r\n')"
+          token="${token%\"}"
+          token="${token#\"}"
+          token="${token%\'}"
+          token="${token#\'}"
+
+          if [ -z "$token" ]; then
             echo "::error::VERAFIDES_DEPLOY_TOKEN is not configured."
             exit 1
           fi
@@ -34,4 +40,4 @@ jobs:
             -H 'Content-Type: application/json' \
             -H 'X-GitHub-Event: push' \
             -d '{"ref":"refs/heads/main","deleted":false,"repository":{"full_name":"ironkingironking/verafides-site"}}' \
-            "https://verafides.ch/api/deploy/verafides/$VERAFIDES_DEPLOY_TOKEN"
+            "https://verafides.ch/api/deploy/verafides/$token"
