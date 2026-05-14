@@ -3,7 +3,7 @@
     <a href="/" class="flex shrink-0 items-center">
       <img src="/images/vera-fides-header.png"
         alt="Vera Fides"
-        class="h-16 w-auto md:h-20"
+        class="h-20 w-auto md:h-24"
         loading="eager"
         decoding="async">
     </a>
@@ -15,6 +15,9 @@
       </summary>
 
       <div class="absolute right-0 mt-2 w-64 rounded-xl border border-slate-200 bg-white shadow-sm p-2 z-50">
+        <a href="/" class="block rounded-lg px-3 py-2 hover:bg-slate-50 text-slate-800">
+          Home
+        </a>
         <a href="/unterstuetzen/spenden/" class="mb-2 block rounded-lg bg-slate-900 px-3 py-2 text-center font-medium text-white hover:bg-slate-700">
           Spenden
         </a>
@@ -44,6 +47,9 @@
     <div class="hidden md:flex items-center gap-5">
       <!-- Desktop: Menü -->
       <nav class="flex items-center gap-5 text-sm text-slate-600" aria-label="Hauptnavigation" data-desktop-nav>
+        <a href="/" class="hover:text-slate-900">
+          Home
+        </a>
         {{ range .Site.Menus.main }}
           {{ if .HasChildren }}
             <div class="relative group" data-desktop-dropdown>
