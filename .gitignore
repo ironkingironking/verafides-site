@@ -1,6 +1,8 @@
 public/
 .hugo_build.lock
 node_modules/
+.DS_Store
+static/admin/*.bak.*
 
 # Local Netlify folder
 .netlify

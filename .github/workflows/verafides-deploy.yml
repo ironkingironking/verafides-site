@@ -1,6 +1,7 @@
 name: Deploy Verafides
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -14,7 +15,6 @@ on:
       - "package.json"
       - "static/**"
       - "tailwind.config.js"
-      - "vercel.json"
 
 jobs:
   deploy:

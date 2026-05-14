@@ -369,6 +369,45 @@ function authHeader(username, token) {
   return `token ${username}:${token}`;
 }
 
+async function getListmonkSessionCookie() {
+  const baseUrl = (process.env.LISTMONK_BASE_URL || "").replace(/\/+$/, "");
+  const username = process.env.LISTMONK_ADMIN_USER || "";
+  const password = process.env.LISTMONK_ADMIN_PASSWORD || "";
+
+  if (!baseUrl || !username || !password) {
+    throw new Error("Missing listmonk admin login env vars.");
+  }
+
+  const loginPage = await fetch(`${baseUrl}/admin/login`);
+  if (!loginPage.ok) {
+    throw new Error(`Listmonk login page failed: ${loginPage.status}`);
+  }
+
+  const loginHtml = await loginPage.text();
+  const nonceMatch = loginHtml.match(/name="nonce" value="([^"]+)"/);
+  if (!nonceMatch) {
+    throw new Error("Could not extract listmonk login nonce.");
+  }
+
+  const loginResponse = await fetch(`${baseUrl}/admin/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ nonce: nonceMatch[1], username, password }).toString(),
+    redirect: "manual",
+  });
+
+  if (![302, 303].includes(loginResponse.status)) {
+    throw new Error(`Listmonk login failed: ${loginResponse.status}`);
+  }
+
+  const setCookie = loginResponse.headers.get("set-cookie");
+  if (!setCookie) {
+    throw new Error("Listmonk login did not return a session cookie.");
+  }
+
+  return setCookie.split(";")[0];
+}
+
 function escapeSqlString(value) {
   return String(value).replaceAll("'", "''");
 }
@@ -383,24 +422,36 @@ app.post("/api/newsletter-unsubscribe", async (req, res) => {
   }
 
   const listmonkUrl = (process.env.LISTMONK_BASE_URL || "").replace(/\/+$/, "");
-  const username = process.env.LISTMONK_API_USERNAME || "";
-  const token = process.env.LISTMONK_API_TOKEN || "";
   const listId = Number.parseInt(process.env.LISTMONK_LIST_ID || "", 10);
 
-  if (!listmonkUrl || !username || !token || !Number.isInteger(listId)) {
-    console.error("[newsletter-unsubscribe] Missing listmonk API env vars.");
+  if (!listmonkUrl || !Number.isInteger(listId)) {
+    console.error("[newsletter-unsubscribe] Missing listmonk admin env vars.");
     return res.status(500).send("Newsletter config missing.");
   }
 
   const email = (payload.email || "").trim().toLowerCase();
   if (!email) return res.status(400).send("Email is required.");
 
+  let sessionCookie;
+  try {
+    sessionCookie = await getListmonkSessionCookie();
+  } catch (err) {
+    console.error("[newsletter-unsubscribe] listmonk session login failed:", err);
+    return res.status(502).type("html").send(
+      renderMessagePage(
+        "Newsletter derzeit nicht erreichbar",
+        "Der Newsletter-Dienst ist momentan nicht erreichbar. Bitte versuche es später erneut.",
+        NEWSLETTER_BACK_PATH
+      )
+    );
+  }
+
   const query = `subscribers.email = '${escapeSqlString(email)}'`;
   const lookupUrl = `${listmonkUrl}/api/subscribers?per_page=100&query=${encodeURIComponent(query)}`;
 
   let lookupResponse;
   try {
-    lookupResponse = await fetch(lookupUrl, { headers: { Authorization: authHeader(username, token) } });
+    lookupResponse = await fetch(lookupUrl, { headers: { Cookie: sessionCookie } });
   } catch (err) {
     console.error("[newsletter-unsubscribe] lookup request failed:", err);
     return res.status(502).type("html").send(
@@ -427,7 +478,7 @@ app.post("/api/newsletter-unsubscribe", async (req, res) => {
     try {
       batchResponse = await fetch(`${listmonkUrl}/api/subscribers/lists`, {
         method: "PUT",
-        headers: { Authorization: authHeader(username, token), "Content-Type": "application/json" },
+        headers: { Cookie: sessionCookie, "Content-Type": "application/json" },
         body: JSON.stringify({ ids, action: "unsubscribe", target_list_ids: [listId] }),
       });
     } catch (err) {
