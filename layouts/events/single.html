@@ -16,30 +16,22 @@
 
       {{ $reg := $p.Params.registration_url }}
 
-<div class="not-prose mt-3">
   {{ if $p.Params.registration_enabled }}
   <div class="not-prose mt-3">
     <a class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50"
-       href="/anmeldung/?event={{ $p.File.TranslationBaseName | urlquery }}">
+       href="{{ default (printf "/anmeldung/?event=%s" ($p.File.TranslationBaseName | urlquery)) $reg }}"
+       target="_blank"
+       rel="noopener noreferrer">
       Jetzt anmelden
     </a>
   </div>
   {{ with $p.Params.registration_note }}
     <p class="text-sm text-slate-500 mt-2">{{ . }}</p>
   {{ end }}
-{{ else }}
-  <div class="not-prose mt-3">
-    <span class="inline-flex items-center rounded-lg border border-slate-200 px-4 py-2 text-slate-400 cursor-not-allowed select-none">
-      Anmeldung folgt
-    </span>
-  </div>
 {{ end }}
 
-</div>
-
-
       <div class="not-prose mt-2">
-        <a class="text-sm underline" href="{{ $p.RelPermalink }}index.ics">In Kalender (ICS)</a>
+        <a class="text-sm underline" href="{{ $p.RelPermalink }}index.ics" target="_blank" rel="noopener noreferrer">In Kalender (ICS)</a>
       </div>
     </header>
 

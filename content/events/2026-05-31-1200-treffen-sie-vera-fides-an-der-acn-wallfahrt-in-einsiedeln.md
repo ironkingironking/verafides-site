@@ -7,6 +7,6 @@ summary: "Vera Fides wird anlässlich der Einsiedler Wallfahrt der Aktion Kirche
 draft: false
 registration_enabled: false
 ---
-Wir freuen uns auf den Austausch mit Ihnen! Weitere Informationen zur Wallfahrt finden Sie iher:\
-\
-https://kirche-in-not.ch/aktuelles/wallfahrt-von-kirche-in-not-acn-und-dem-malteserorden-mit-kurt-kardinal-koch
+Wir freuen uns auf den Austausch mit Ihnen! Weitere Informationen zur Wallfahrt finden Sie hier:
+
+[Wallfahrt von Kirche in Not ACN und dem Malteserorden](https://kirche-in-not.ch/aktuelles/wallfahrt-von-kirche-in-not-acn-und-dem-malteserorden-mit-kurt-kardinal-koch)

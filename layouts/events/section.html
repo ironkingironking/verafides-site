@@ -10,7 +10,7 @@
     <ul class="space-y-3">
       {{ range .Pages.ByDate }}
         <li class="rounded-xl border border-slate-200 p-4">
-          <a class="text-lg font-semibold hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <a class="text-lg font-semibold hover:underline" href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">{{ .Title }}</a>
           <div class="text-sm text-slate-500 mt-1">
             {{ with .Date }}{{ .Format "02.01.2006 15:04" }}{{ end }}
             {{ with .Params.location }} · {{ . }}{{ end }}
