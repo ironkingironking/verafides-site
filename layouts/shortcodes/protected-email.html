@@ -1,0 +1,6 @@
+{{- partial "protected-email.html" (dict
+  "page" .Page
+  "user" (.Get "user" | default "redaktion")
+  "domain" (.Get "domain" | default "verafides.ch")
+  "label" (.Get "label" | default "E-Mail schreiben")
+) -}}

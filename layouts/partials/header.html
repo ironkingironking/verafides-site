@@ -38,29 +38,121 @@
       </div>
     </details>
 
-    <!-- Desktop: Menü -->
-    <nav class="hidden md:flex items-center gap-5 text-sm text-slate-600">
-      {{ range .Site.Menus.main }}
-        {{ if .HasChildren }}
-          <details class="relative group">
-            <summary class="list-none cursor-pointer hover:text-slate-900 inline-flex items-center gap-1">
-              {{ .Name }} <span aria-hidden="true">▾</span>
-            </summary>
+      <!-- Desktop: Menü -->
+      <nav class="hidden md:flex items-center gap-5 text-sm text-slate-600" aria-label="Hauptnavigation" data-desktop-nav>
+        {{ range .Site.Menus.main }}
+          {{ if .HasChildren }}
+            <div class="relative group" data-desktop-dropdown>
+              <button class="cursor-pointer hover:text-slate-900 inline-flex items-center gap-1" type="button" aria-haspopup="true" aria-expanded="false" data-desktop-dropdown-trigger>
+                {{ .Name }} <span aria-hidden="true">▾</span>
+              </button>
 
-            <div class="absolute left-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-sm p-2 z-50">
-              {{ range .Children }}
-                <a href="{{ .URL }}" class="block rounded-lg px-3 py-2 hover:bg-slate-50 hover:text-slate-900">
-                  {{ .Name }}
-                </a>
-              {{ end }}
+              <div class="absolute left-0 w-56 z-50" style="top: 100%; padding-top: 0.5rem;" data-desktop-dropdown-menu hidden>
+                <div class="rounded-xl border border-slate-200 bg-white shadow-sm p-2">
+                  {{ range .Children }}
+                    <a href="{{ .URL }}" class="block rounded-lg px-3 py-2 hover:bg-slate-50 hover:text-slate-900">
+                      {{ .Name }}
+                    </a>
+                  {{ end }}
+                </div>
+              </div>
             </div>
-          </details>
-        {{ else }}
-          <a href="{{ .URL }}" class="hover:text-slate-900">
-            {{ .Name }}
-          </a>
+          {{ else }}
+            <a href="{{ .URL }}" class="hover:text-slate-900">
+              {{ .Name }}
+            </a>
+          {{ end }}
         {{ end }}
-      {{ end }}
-    </nav>
-  </div>
-</header>
+      </nav>
+    </div>
+    <script>
+      (() => {
+        const nav = document.querySelector("[data-desktop-nav]");
+        if (!nav) return;
+
+        const desktopQuery = window.matchMedia("(min-width: 768px)");
+        const dropdowns = Array.from(nav.querySelectorAll("[data-desktop-dropdown]"));
+
+        const getTrigger = (dropdown) => dropdown.querySelector("[data-desktop-dropdown-trigger]");
+        const getMenu = (dropdown) => dropdown.querySelector("[data-desktop-dropdown-menu]");
+        const isDesktop = () => desktopQuery.matches;
+        const closeDropdown = (dropdown) => {
+          dropdown.removeAttribute("data-open");
+          getTrigger(dropdown)?.setAttribute("aria-expanded", "false");
+          const menu = getMenu(dropdown);
+          if (menu) menu.hidden = true;
+        };
+        const closeAll = (except = null) => {
+          dropdowns.forEach((dropdown) => {
+            if (dropdown !== except) closeDropdown(dropdown);
+          });
+        };
+        const openOnly = (dropdown) => {
+          if (!isDesktop()) return;
+          closeAll(dropdown);
+          dropdown.setAttribute("data-open", "");
+          getTrigger(dropdown)?.setAttribute("aria-expanded", "true");
+          const menu = getMenu(dropdown);
+          if (menu) menu.hidden = false;
+        };
+
+        dropdowns.forEach((dropdown) => {
+          dropdown.addEventListener("mouseenter", () => openOnly(dropdown));
+          dropdown.addEventListener("mouseleave", () => {
+            if (isDesktop()) closeDropdown(dropdown);
+          });
+        });
+
+        nav.addEventListener("mouseleave", () => {
+          if (isDesktop()) closeAll();
+        });
+
+        nav.addEventListener("focusin", (event) => {
+          if (!(event.target instanceof Element)) return;
+          const dropdown = event.target.closest("[data-desktop-dropdown]");
+          if (dropdown && nav.contains(dropdown)) {
+            openOnly(dropdown);
+          } else if (nav.contains(event.target)) {
+            closeAll();
+          }
+        });
+
+        nav.addEventListener("focusout", () => {
+          window.requestAnimationFrame(() => {
+            if (isDesktop() && !nav.contains(document.activeElement)) closeAll();
+          });
+        });
+
+        nav.addEventListener("click", (event) => {
+          if (!(event.target instanceof Element)) return;
+          const trigger = event.target.closest("[data-desktop-dropdown-trigger]");
+          if (!trigger || !isDesktop()) return;
+
+          event.preventDefault();
+          const dropdown = trigger.closest("[data-desktop-dropdown]");
+          if (!dropdown) return;
+          openOnly(dropdown);
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!(event.target instanceof Element)) return;
+          if (isDesktop() && !nav.contains(event.target)) closeAll();
+        });
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && isDesktop()) closeAll();
+        });
+
+        document.addEventListener("focusin", (event) => {
+          if (!(event.target instanceof Element)) return;
+          if (isDesktop() && !nav.contains(event.target)) closeAll();
+        });
+
+        if (desktopQuery.addEventListener) {
+          desktopQuery.addEventListener("change", () => closeAll());
+        } else {
+          desktopQuery.addListener(() => closeAll());
+        }
+      })();
+    </script>
+  </header>

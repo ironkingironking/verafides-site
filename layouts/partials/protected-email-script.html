@@ -1,0 +1,27 @@
+<script>
+  (() => {
+    const enhanceProtectedEmails = () => {
+      document.querySelectorAll("[data-protected-email]").forEach((container) => {
+        const user = container.getAttribute("data-user");
+        const domain = container.getAttribute("data-domain");
+        if (!user || !domain) return;
+
+        const address = user + "@" + domain;
+        const text = container.querySelector("[data-protected-email-text]");
+        const link = container.querySelector("[data-protected-email-link]");
+
+        if (text) text.textContent = address;
+        if (link) {
+          link.href = "mailto:" + address;
+          link.hidden = false;
+        }
+      });
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", enhanceProtectedEmails, { once: true });
+    } else {
+      enhanceProtectedEmails();
+    }
+  })();
+</script>

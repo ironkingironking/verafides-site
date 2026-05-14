@@ -1,5 +1,6 @@
 ---
 title: Impressum
+summary: "Impressum des Vereins Vera Fides."
 documents_list: false
 ---
 Verein Vera Fides
@@ -10,4 +11,4 @@ Neufeldstrasse 3
 
 CH-3012 Bern
 
-E-Mail: redaktion@verafides.ch
+E-Mail: {{< protected-email >}}

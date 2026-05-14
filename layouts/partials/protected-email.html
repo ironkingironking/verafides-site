@@ -1,0 +1,8 @@
+{{- $user := .user | default "redaktion" -}}
+{{- $domain := .domain | default "verafides.ch" -}}
+{{- $label := .label | default "E-Mail schreiben" -}}
+{{- $fallbackDomain := replace $domain "." " [dot] " -}}
+<span class="inline-flex flex-wrap items-center gap-2" data-protected-email data-user="{{ $user }}" data-domain="{{ $domain }}">
+  <span data-protected-email-text>{{ $user }} [at] {{ $fallbackDomain }}</span>
+  <a class="underline underline-offset-4 hover:text-slate-700" href="#" data-protected-email-link hidden rel="nofollow">{{ $label }}</a>
+</span>

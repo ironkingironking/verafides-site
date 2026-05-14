@@ -32,6 +32,6 @@
   </button>
 
   <p class="text-sm text-slate-500">
-    Versand an: redaktion@verafides.ch
+    Versand an: {{ partial "protected-email.html" (dict "page" .) }}
   </p>
 </form>
