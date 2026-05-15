@@ -8,4 +8,4 @@ registration_enabled: false
 aliases:
   - /unterstuetzen/veranstaltungen/2026-05-14-veranstaltung-im-september-2026/
 ---
-Referenten, exaktes Datum und Details folgen demnächst.
+Referenten und Details folgen demnächst.
