@@ -10,11 +10,11 @@ Wir setzen Spenden transparent für Aufklärung, Projekte und Vereinsarbeit ein.
 
 Wenn Sie lieber per Banküberweisung spenden möchten, finden Sie die Kontodaten weiter unten auf dieser Seite.
 
-<div id="rnw-solution-embed-dzqyj" style="width: 100%; margin: 0 auto; max-width: 580px;"></div>
+<div id="rnw-solution-embed-fnxgd" style="width: 100%; margin: 0 auto; max-width: 580px;"></div>
 <script type="module">
   import {SolutionEmbed} from "https://cdn.jsdelivr.net/npm/@raisenow/solution-embed@1/dist/index.js"
-  SolutionEmbed.render("#rnw-solution-embed-dzqyj", {
-    "url": "https://donate.raisenow.io/dzqyj?lng=de",
+  SolutionEmbed.render("#rnw-solution-embed-fnxgd", {
+    "url": "https://donate.raisenow.io/fnxgd?lng=de",
     "info": false,
   })
 </script>
