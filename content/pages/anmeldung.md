@@ -5,4 +5,4 @@ url: "/anmeldung/"
 form: "registration"
 
 ---
-Bitte fülle das Formular aus. Wir melden uns mit einer Bestätigung.
+Bitte füllen Sie das Formular aus. Wir melden uns mit einer Bestätigung.

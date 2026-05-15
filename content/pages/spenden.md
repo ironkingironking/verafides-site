@@ -21,8 +21,8 @@ Wenn Sie lieber per Banküberweisung spenden möchten, finden Sie die Kontodaten
 
 ## Spende per Überweisung
 
-Du kannst einmalig oder regelmässig per Banküberweisung spenden.
-Bitte nutze dafür folgende Angaben:
+Sie können einmalig oder regelmässig per Banküberweisung spenden.
+Bitte nutzen Sie dafür folgende Angaben:
 
 - Kontoinhaber: Vera Fides, Neufeldstrasse 3, CH-3012 Bern
 - IBAN: CH68 0900 0000 1624 8197 3
@@ -30,7 +30,7 @@ Bitte nutze dafür folgende Angaben:
 
 ## Regelmässig unterstützen
 
-Mit einem monatlichen Dauerauftrag hilfst du besonders nachhaltig.
+Mit einem monatlichen Dauerauftrag helfen Sie besonders nachhaltig.
 Schon kleine regelmässige Beiträge geben uns Planungssicherheit.
 
 ## Herzlichen Dank
