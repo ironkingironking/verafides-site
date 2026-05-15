@@ -17,6 +17,7 @@
     "tw:build": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --minify",
     "tw:watch": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --watch",
     "hugo:build": "node -r dotenv/config scripts/hugo-build.js",
-    "build": "npm run tw:build && npm run hugo:build"
+    "build": "npm run tw:build && npm run hugo:build",
+    "lint": "npm run build && node scripts/lint-site.js"
   }
 }
