@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
-{{ partial "head-meta.html" . }}
+    {{ partial "seo.html" . }}
+    {{ partial "schema.html" . }}
 
     <link rel="stylesheet" href="/css/main.css" />
 

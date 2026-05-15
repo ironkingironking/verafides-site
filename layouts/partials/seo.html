@@ -1,0 +1,67 @@
+{{- $siteName := .Site.Params.siteName | default .Site.Title -}}
+{{- $defaultDescription := .Site.Params.description | default "" -}}
+{{- $title := .Title | default $siteName -}}
+{{- with .Params.meta_title -}}
+  {{- $title = . -}}
+{{- end -}}
+{{- with .Params.seo_title -}}
+  {{- $title = . -}}
+{{- end -}}
+{{- if .IsHome -}}
+  {{- $title = .Params.seo_title | default .Params.meta_title | default (printf "%s | Katholischer Verein für Glauben, Tradition und Neuevangelisierung in der Schweiz" $siteName) -}}
+{{- else if not (or .Params.seo_title .Params.meta_title) -}}
+  {{- $title = printf "%s | %s" .Title $siteName -}}
+{{- end -}}
+
+{{- $description := $defaultDescription -}}
+{{- with .Params.description -}}
+  {{- $description = . -}}
+{{- else -}}
+  {{- with .Params.summary -}}
+    {{- $description = . -}}
+  {{- else -}}
+    {{- with .Description -}}
+      {{- $description = . -}}
+    {{- else -}}
+      {{- with .Summary -}}
+        {{- $description = . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $description = $description | plainify | htmlUnescape | replaceRE "\\s+" " " -}}
+
+{{- $image := "" -}}
+{{- with .Params.image -}}
+  {{- $image = . | absURL -}}
+{{- else -}}
+  {{- with .Site.Params.defaultImage -}}
+    {{- $image = . | absURL -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $robots := "index,follow" -}}
+{{- if or .Params.noindex (eq .Kind "taxonomy") (eq .Kind "term") (and (eq .Kind "section") (in (slice "pages" "documents") .Section)) -}}
+  {{- $robots = "noindex,follow" -}}
+{{- end -}}
+
+<title>{{ $title }}</title>
+<meta name="description" content="{{ $description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="robots" content="{{ $robots }}">
+
+<meta property="og:site_name" content="{{ $siteName }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:type" content="{{ if and .IsPage (eq .Section "posts") }}article{{ else if and .IsPage (eq .Section "events") }}event{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+{{- with $image }}
+<meta property="og:image" content="{{ . }}">
+{{- end }}
+
+<meta name="twitter:card" content="{{ if $image }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $description }}">
+{{- with $image }}
+<meta name="twitter:image" content="{{ . }}">
+{{- end }}

@@ -2,6 +2,8 @@
 title: "Teilaustritt"
 type: "pages"
 url: "/aktuelles/teilaustritt/"
+seo_title: "Teilaustritt Kirche Schweiz | Vera Fides"
+description: "Informationen zum Teilaustritt aus der öffentlich-rechtlichen Kirche in der Schweiz, ohne den katholischen Glauben oder die Zugehörigkeit zur römisch-katholischen Kirche als Glaubensgemeinschaft aufzugeben."
 ---
 Das Projekt Teilaustritt begleitet Menschen, die sich differenziert mit ihrer Zugehörigkeit zur Kirche auseinandersetzen möchten.
 

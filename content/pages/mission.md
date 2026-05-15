@@ -3,6 +3,8 @@ title: Unsere Mission
 url: /ueber/mission/
 slug: ""
 type: pages
+seo_title: "Mission | Vera Fides Schweiz"
+description: "Die Mission von Vera Fides ist es, den katholischen Glauben sichtbar, verständlich und fruchtbar zu machen – in Kirche, Gesellschaft und öffentlichem Leben."
 ---
 **Vera Fides** steht für den katholischen Glauben in seiner ganzen Wahrheit, Schönheit und Tiefe. Unsere Mission ist es, den Glauben nicht nur zu bewahren, sondern ihn neu sichtbar, verständlich und fruchtbar zu machen — in Kirche, Gesellschaft und öffentlichem Leben.
 

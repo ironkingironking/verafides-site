@@ -2,6 +2,8 @@
 title: Spenden
 url: /unterstuetzen/spenden/
 type: pages
+seo_title: "Spenden | Vera Fides unterstützen"
+description: "Unterstützen Sie Vera Fides mit einer Spende und helfen Sie mit, katholische Bildungsarbeit, Veranstaltungen, Publikationen und Vereinsarbeit zu ermöglichen."
 ---
 
 Wir setzen Spenden transparent für Aufklärung, Projekte und Vereinsarbeit ein.

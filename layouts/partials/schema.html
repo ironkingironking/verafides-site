@@ -1,0 +1,70 @@
+{{- $siteName := .Site.Params.siteName | default .Site.Title -}}
+{{- $siteURL := .Site.BaseURL | default "https://verafides.ch/" -}}
+{{- $sameAs := slice -}}
+{{- with .Site.Params.social.facebook }}{{ $sameAs = $sameAs | append . }}{{ end -}}
+{{- with .Site.Params.social.youtube }}{{ $sameAs = $sameAs | append . }}{{ end -}}
+{{- $description := .Params.description | default .Params.summary | default .Description | default .Summary | default .Site.Params.description -}}
+{{- $description = $description | plainify | htmlUnescape | replaceRE "\\s+" " " -}}
+{{- $publisher := dict "@type" "Organization" "name" $siteName "url" $siteURL -}}
+
+{{- $organization := dict "@context" "https://schema.org" "@type" "Organization" "name" $siteName "url" $siteURL "sameAs" $sameAs -}}
+<script type="application/ld+json">{{ $organization | jsonify | safeJS }}</script>
+{{- $website := dict "@context" "https://schema.org" "@type" "WebSite" "name" $siteName "url" $siteURL -}}
+<script type="application/ld+json">{{ $website | jsonify | safeJS }}</script>
+
+{{- if and .IsPage (eq .Section "posts") -}}
+  {{- $article := dict
+    "@context" "https://schema.org"
+    "@type" "Article"
+    "headline" .Title
+    "description" $description
+    "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+    "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+    "author" (dict "@type" "Organization" "name" (.Params.author | default $siteName))
+    "publisher" $publisher
+    "url" .Permalink
+  -}}
+<script type="application/ld+json">{{ $article | jsonify | safeJS }}</script>
+{{- end -}}
+
+{{- if and .IsPage (eq .Section "events") -}}
+  {{- $event := dict
+    "@context" "https://schema.org"
+    "@type" "Event"
+    "name" .Title
+    "startDate" (.Date.Format "2006-01-02T15:04:05Z07:00")
+    "description" $description
+    "url" .Permalink
+  -}}
+  {{- with .Params.end -}}{{ $event = merge $event (dict "endDate" (time .).Format "2006-01-02T15:04:05Z07:00") }}{{ end -}}
+  {{- with .Params.location -}}{{ $event = merge $event (dict "location" (dict "@type" "Place" "name" .)) }}{{ end -}}
+<script type="application/ld+json">{{ $event | jsonify | safeJS }}</script>
+{{- end -}}
+
+{{- if eq .RelPermalink "/faq/" -}}
+  {{- $questions := slice
+    (dict "q" "Was ist Vera Fides?" "a" "Vera Fides ist ein katholischer Verein in der Schweiz. Der Verein setzt sich für die Förderung, Vertiefung und öffentliche Bezeugung des katholischen Glaubens ein.")
+    (dict "q" "Wofür steht der Name Vera Fides?" "a" "Vera Fides bedeutet wahrer Glaube. Der Name bringt zum Ausdruck, dass der Verein sich am katholischen Glauben orientiert, wie er durch die Kirche überliefert und gelehrt wird.")
+    (dict "q" "Ist Vera Fides eine Pfarrei oder kirchliche Institution?" "a" "Nein. Vera Fides ist keine Pfarrei und keine kirchliche Behörde, sondern ein privatrechtlicher Verein im Sinne von Art. 60 ff. ZGB.")
+    (dict "q" "Welche Ziele verfolgt Vera Fides?" "a" "Vera Fides fördert und vertieft den katholischen Glauben, vernetzt lehramtstreue Katholiken und Gruppen, unterstützt Glaubensverkündigung und Neuevangelisierung und wirkt im kirchlichen und gesellschaftlichen Diskurs mit.")
+    (dict "q" "Wer kann Mitglied werden?" "a" "Mitglied kann grundsätzlich werden, wer die Ziele des Vereins unterstützt und sich mit dem katholischen Glauben verbunden weiss. Die Aufnahme erfolgt gemäss den Statuten des Vereins.")
+    (dict "q" "Muss man katholisch sein, um Vera Fides zu unterstützen?" "a" "Eine Mitgliedschaft richtet sich an Personen, die sich mit dem katholischen Glauben und den Zielen des Vereins identifizieren. Unterstützung durch Spenden, Mithilfe oder ideelle Förderung ist auch darüber hinaus möglich.")
+    (dict "q" "Ist Vera Fides politisch?" "a" "Vera Fides ist kein politischer Verein und keine Partei. Der Verein möchte aus katholischer Perspektive zur Meinungsbildung beitragen.")
+    (dict "q" "Organisiert Vera Fides Veranstaltungen?" "a" "Ja. Vera Fides kann Veranstaltungen, Vorträge, Treffen, Diskussionsabende oder andere Formate organisieren, die dem Vereinszweck dienen.")
+    (dict "q" "Kann ich bei Vera Fides mitarbeiten?" "a" "Ja. Interessierte Personen können sich mit ihren Fähigkeiten in Redaktion, Organisation, Veranstaltungen, Kommunikation, Technik oder Vereinsarbeit einbringen.")
+    (dict "q" "Wie finanziert sich Vera Fides?" "a" "Vera Fides finanziert sich insbesondere durch Mitgliederbeiträge, Spenden, Zuwendungen sowie Erträge aus eigenen Veranstaltungen.")
+    (dict "q" "Kann ich Vera Fides finanziell unterstützen?" "a" "Ja. Spenden helfen dem Verein, seine Arbeit weiterzuführen und auszubauen.")
+    (dict "q" "Sind Spenden an Vera Fides steuerlich abzugsfähig?" "a" "Ob Spenden steuerlich abzugsfähig sind, hängt von der steuerlichen Anerkennung des Vereins und den kantonalen Vorgaben ab.")
+    (dict "q" "Wie kann ich Vera Fides kontaktieren?" "a" "Sie können Vera Fides über die auf der Website angegebene Kontaktadresse erreichen.")
+    (dict "q" "Kann ich eigene Beiträge oder Themenvorschläge einreichen?" "a" "Ja. Vera Fides freut sich über passende Themenvorschläge, Hinweise, Erfahrungsberichte oder redaktionelle Beiträge, sofern sie mit dem Vereinszweck vereinbar sind.")
+    (dict "q" "Vertritt Vera Fides eine bestimmte innerkirchliche Richtung?" "a" "Vera Fides orientiert sich am katholischen Glauben und am Lehramt der Kirche.")
+    (dict "q" "Wo befindet sich der Sitz des Vereins?" "a" "Der Verein Vera Fides hat seinen Sitz in Bern.")
+    (dict "q" "Gibt es Statuten?" "a" "Ja. Vera Fides verfügt über Vereinsstatuten gemäss Schweizer Vereinsrecht.")
+  -}}
+  {{- $mainEntity := slice -}}
+  {{- range $questions -}}
+    {{- $mainEntity = $mainEntity | append (dict "@type" "Question" "name" .q "acceptedAnswer" (dict "@type" "Answer" "text" .a)) -}}
+  {{- end -}}
+  {{- $faq := dict "@context" "https://schema.org" "@type" "FAQPage" "mainEntity" $mainEntity -}}
+<script type="application/ld+json">{{ $faq | jsonify | safeJS }}</script>
+{{- end -}}

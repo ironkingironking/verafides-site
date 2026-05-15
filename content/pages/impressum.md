@@ -1,6 +1,7 @@
 ---
 title: Impressum
 summary: "Impressum des Vereins Vera Fides."
+description: "Impressum des Vereins Vera Fides mit Sitz in Bern und Kontaktangaben."
 documents_list: false
 ---
 <div class="not-prose space-y-2">

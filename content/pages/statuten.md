@@ -2,6 +2,8 @@
 title: Statuten
 url: /ueber/statuten/
 type: pages
+seo_title: "Statuten | Verein Vera Fides"
+description: "Die Statuten des Vereins Vera Fides regeln Zweck, Mitgliedschaft, Organe, Mittel und Organisation des katholischen Vereins mit Sitz in Bern."
 ---
 Statuten
 Verein Vera Fides

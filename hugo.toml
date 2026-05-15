@@ -2,9 +2,14 @@ buildFuture = true
 
 baseURL = "https://verafides.ch/"
 languageCode = "de-ch"
-title = "Verafides"
+title = "Vera Fides"
 enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
 
+[params]
+description = "Vera Fides ist ein katholischer Verein in der Schweiz für Glaubensverkündigung, Neuevangelisierung, katholische Bildung, Veranstaltungen und Vernetzung lehramtstreuer Katholiken."
+siteName = "Vera Fides"
+defaultImage = "/images/vera-fides-header.png"
 
 [markup]
   [markup.goldmark]
