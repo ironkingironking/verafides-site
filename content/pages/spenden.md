@@ -6,6 +6,17 @@ type: pages
 
 Wir setzen Spenden transparent für Aufklärung, Projekte und Vereinsarbeit ein.
 
+## Online spenden
+
+<div id="rnw-solution-embed-dzqyj" style="width: 100%; margin: 0 auto; max-width: 580px;"></div>
+<script type="module">
+  import {SolutionEmbed} from "https://cdn.jsdelivr.net/npm/@raisenow/solution-embed@1/dist/index.js"
+  SolutionEmbed.render("#rnw-solution-embed-dzqyj", {
+    "url": "https://donate.raisenow.io/dzqyj?lng=de",
+    "info": false,
+  })
+</script>
+
 ## Spende per Überweisung
 
 Du kannst einmalig oder regelmässig per Banküberweisung spenden.
@@ -21,5 +32,4 @@ Mit einem monatlichen Dauerauftrag hilfst du besonders nachhaltig.
 Schon kleine regelmässige Beiträge geben uns Planungssicherheit.
 
 ## Herzlichen Dank
-
 
