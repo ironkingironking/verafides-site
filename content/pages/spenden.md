@@ -24,7 +24,7 @@ Wenn Sie lieber per Banküberweisung spenden möchten, finden Sie die Kontodaten
 Du kannst einmalig oder regelmässig per Banküberweisung spenden.
 Bitte nutze dafür folgende Angaben:
 
-- Kontoinhaber: Vera Fides
+- Kontoinhaber: Vera Fides, Neufeldstrasse 3, CH-3012 Bern
 - IBAN: CH68 0900 0000 1624 8197 3
 - Verwendungszweck: Spende Vera Fides
 
