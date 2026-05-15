@@ -48,15 +48,13 @@
       </div>
       <div class="grid gap-4 md:grid-cols-2">
         {{ range first 4 (where .Site.RegularPages "Section" "posts") }}
-          <article class="rounded-xl border border-slate-200 bg-white p-5">
+          <a class="block rounded-xl border border-slate-200 bg-white p-5 hover:bg-slate-50 hover:text-slate-900" href="{{ .RelPermalink }}">
             <div class="text-sm text-slate-500">{{ .Date.Format "02.01.2006" }}</div>
-            <h3 class="mt-2 text-lg font-semibold">
-              <a class="hover:underline" href="{{ .RelPermalink }}">{{ .Title }}</a>
-            </h3>
+            <h3 class="mt-2 text-lg font-semibold">{{ .Title }}</h3>
             {{ with .Summary }}
               <p class="mt-2 line-clamp-3 leading-7 text-slate-700">{{ . | plainify }}</p>
             {{ end }}
-          </article>
+          </a>
         {{ end }}
       </div>
     </section>

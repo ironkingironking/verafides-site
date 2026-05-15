@@ -65,7 +65,7 @@ enableRobotsTXT = true
   weight = 20
 
 [[menu.main]]
-  name = "Aktivitäten"
+  name = "Neuigkeiten"
   parent = "aktuelles"
   url = "/aktuelles/"
   weight = 10
