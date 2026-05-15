@@ -1,5 +1,6 @@
 ---
 title: Impressum
+seo_title: "Impressum | Vera Fides Schweiz"
 summary: "Impressum des Vereins Vera Fides."
 description: "Impressum des Vereins Vera Fides mit Sitz in Bern und Kontaktangaben."
 documents_list: false

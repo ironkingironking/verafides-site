@@ -1,5 +1,6 @@
 ---
 title: Datenschutz
+seo_title: "Datenschutz | Vera Fides Schweiz"
 description: "Datenschutzerklärung von Vera Fides mit Informationen zur Bearbeitung von Personendaten auf der Website und im Rahmen der Vereinsarbeit."
 ---
 ## 1. Verantwortliche Stelle

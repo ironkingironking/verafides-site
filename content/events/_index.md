@@ -3,9 +3,8 @@ title: "Termine"
 url: "/unterstuetzen/termine/"
 type: "events"
 is_index: true
+seo_title: "Termine | Vera Fides Veranstaltungen"
 description: "Aktuelle Termine, Veranstaltungen und Treffen von Vera Fides in der Schweiz."
-aliases:
-  - "/unterstuetzen/veranstaltungen/"
 outputs:
   - HTML
 cascade:

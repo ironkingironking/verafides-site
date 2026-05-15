@@ -11,7 +11,7 @@ if (requireTurnstile && (!siteKey || siteKey === "your_turnstile_site_key")) {
 }
 
 const args = process.argv.slice(2);
-const result = spawnSync("hugo", args.length > 0 ? args : ["--gc", "--minify"], {
+const result = spawnSync("hugo", args.length > 0 ? args : ["--gc", "--minify", "--cleanDestinationDir"], {
   env: process.env,
   stdio: "inherit",
 });
