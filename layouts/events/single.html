@@ -19,7 +19,7 @@
   {{ if $p.Params.registration_enabled }}
   <div class="not-prose mt-3">
     <a class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50"
-       href="{{ default (printf "/anmeldung/?event=%s" ($p.File.TranslationBaseName | urlquery)) $reg }}"
+       href="{{ default (printf "/anmeldung/?event=%s" ($p.Title | urlquery)) $reg }}"
        target="_blank"
        rel="noopener noreferrer">
       Jetzt anmelden

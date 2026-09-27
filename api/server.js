@@ -34,6 +34,7 @@ function createTransport() {
       user: smtpUser,
       pass: smtpPass,
     };
+    transport.requireTLS = !secure;
   }
 
   return nodemailer.createTransport(transport);
