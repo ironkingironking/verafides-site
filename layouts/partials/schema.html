@@ -36,7 +36,7 @@
     "description" $description
     "url" .Permalink
   -}}
-  {{- with .Params.end -}}{{ $event = merge $event (dict "endDate" (time .).Format "2006-01-02T15:04:05Z07:00") }}{{ end -}}
+  {{- with .Params.end -}}{{ $event = merge $event (dict "endDate" ((time .).Format "2006-01-02T15:04:05Z07:00")) }}{{ end -}}
   {{- with .Params.location -}}{{ $event = merge $event (dict "location" (dict "@type" "Place" "name" .)) }}{{ end -}}
 <script type="application/ld+json">{{ $event | jsonify | safeJS }}</script>
 {{- end -}}
