@@ -7,6 +7,8 @@
   <!-- Event aus URL übernehmen (JS setzt es) -->
   <input type="hidden" name="event" id="event">
   <input type="hidden" name="ts" value="{{ now.Unix }}">
+  <!-- Ausfülldauer in Sekunden (Browser misst selbst; Schutz gegen Bots) -->
+  <input type="hidden" name="elapsed" id="elapsed">
 
   <div class="rounded-xl border border-slate-200 p-4 bg-slate-50">
     <div class="text-sm text-slate-600">Veranstaltung</div>
@@ -44,5 +46,12 @@
     const eventLabel = document.getElementById("eventLabel");
     if (eventField) eventField.value = ev;
     if (eventLabel) eventLabel.textContent = ev || "—";
+    var started = Date.now();
+    var elapsed = document.getElementById("elapsed");
+    if (eventField && eventField.form && elapsed) {
+      eventField.form.addEventListener("submit", function () {
+        elapsed.value = String(Math.round((Date.now() - started) / 1000));
+      });
+    }
   })();
 </script>

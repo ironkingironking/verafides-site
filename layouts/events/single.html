@@ -17,7 +17,9 @@
       {{ $reg := $p.Params.registration_url }}
 
   {{ if $p.Params.registration_enabled }}
-  <div class="not-prose mt-3">
+  {{ $end := time.AsTime ($p.Params.end | default $p.Date) }}
+  {{ if ge $end now }}
+  <div class="not-prose mt-3" data-registration-end="{{ $end.Format "2006-01-02T15:04:05Z07:00" }}">
     <a class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 hover:bg-slate-50"
        href="{{ default (printf "/anmeldung/?event=%s" ($p.Title | urlquery)) $reg }}"
        target="_blank"
@@ -25,6 +27,18 @@
       Jetzt anmelden
     </a>
   </div>
+  <script>
+    // Termin seit dem letzten Build vorbei: Anmeldeknopf ausblenden
+    (function () {
+      var el = document.querySelector("[data-registration-end]");
+      if (el && Date.parse(el.getAttribute("data-registration-end")) < Date.now()) {
+        el.outerHTML = '<div class="mt-3 text-sm text-slate-500">Anmeldung geschlossen</div>';
+      }
+    })();
+  </script>
+  {{ else }}
+  <div class="mt-3 text-sm text-slate-500">Anmeldung geschlossen</div>
+  {{ end }}
   {{ with $p.Params.registration_note }}
     <p class="text-sm text-slate-500 mt-2">{{ . }}</p>
   {{ end }}
