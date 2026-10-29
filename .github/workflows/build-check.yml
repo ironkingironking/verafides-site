@@ -1,0 +1,32 @@
+name: Build-Prüfung
+
+# Baut die Seite für jeden Pull Request wie der Server (npm ci, npm run build mit Hugo 0.152.2),
+# damit eine fehlerhafte Vorlage nicht erst beim Deploy auf main auffällt.
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Hugo 0.152.2 (wie auf dem Server)
+        run: |
+          curl -sSL -o hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_extended_0.152.2_linux-amd64.deb
+          sudo dpkg -i hugo.deb
+          hugo version
+      - run: npm ci
+      - run: npm run build
+      - name: Termine und Anmeldung vorhanden
+        run: |
+          grep -q "Kommende Termine" public/unterstuetzen/termine/index.html
+          grep -q 'name="elapsed"\|name=elapsed' public/anmeldung/index.html
+      - name: API startet
+        run: node --check api/server.js
