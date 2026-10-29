@@ -5,4 +5,4 @@ url: "/anmeldung/"
 form: "registration"
 
 ---
-Bitte füllen Sie das Formular aus. Wir melden uns mit einer Bestätigung.
+Bitte füllen Sie das Formular aus. Sie erhalten danach eine Eingangsbestätigung per E-Mail.

@@ -1,5 +1,18 @@
 {{ define "main" }}
-  <section class="space-y-6">
+  {{/* Kommende und vergangene Termine getrennt; massgebend ist das Ende (end), sonst der Beginn */}}
+  {{ $now := now }}
+  {{ $upcoming := slice }}
+  {{ $past := slice }}
+  {{ range .Pages }}
+    {{ $end := time.AsTime (.Params.end | default .Date) }}
+    {{ if ge $end $now }}
+      {{ $upcoming = $upcoming | append . }}
+    {{ else }}
+      {{ $past = $past | append . }}
+    {{ end }}
+  {{ end }}
+
+  <section class="space-y-8">
     <header class="space-y-2">
       <h1 class="text-3xl font-semibold tracking-tight">{{ .Title }}</h1>
       {{ with .Content }}
@@ -7,19 +20,32 @@
       {{ end }}
     </header>
 
-    <ul class="space-y-3">
-      {{ range .Pages.ByDate }}
-        <li class="rounded-xl border border-slate-200 p-4">
-          <a class="text-lg font-semibold hover:underline" href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">{{ .Title }}</a>
-          <div class="text-sm text-slate-500 mt-1">
-            {{ with .Date }}{{ .Format "02.01.2006 15:04" }}{{ end }}
-            {{ with .Params.location }} · {{ . }}{{ end }}
-          </div>
-          {{ with .Params.summary }}
-            <p class="mt-2 text-slate-700">{{ . }}</p>
-          {{ end }}
-        </li>
-      {{ end }}
-    </ul>
+    <div class="space-y-4">
+      <h2 class="text-xl font-semibold">Kommende Termine</h2>
+      <ul class="space-y-3" id="events-upcoming">
+        {{ range sort $upcoming "Date" "asc" }}{{ partial "event-item.html" . }}{{ end }}
+      </ul>
+      <p class="text-slate-600" id="events-upcoming-empty"{{ if $upcoming }} hidden{{ end }}>Derzeit sind keine kommenden Termine publiziert.</p>
+    </div>
+
+    <div class="space-y-4" id="events-past-wrap"{{ if not $past }} hidden{{ end }}>
+      <h2 class="text-xl font-semibold">Vergangene Termine</h2>
+      <ul class="space-y-3 opacity-75" id="events-past">
+        {{ range first 10 (sort $past "Date" "desc") }}{{ partial "event-item.html" . }}{{ end }}
+      </ul>
+    </div>
   </section>
+
+  <script>
+    // Die Seite wird nur bei Änderungen neu gebaut: Termine, die seither vorbei sind, hier verschieben
+    (function () {
+      var now = Date.now(), up = document.getElementById("events-upcoming"), past = document.getElementById("events-past");
+      if (!up || !past) return;
+      Array.prototype.slice.call(up.querySelectorAll("li[data-end]")).forEach(function (li) {
+        if (Date.parse(li.getAttribute("data-end")) < now) past.insertBefore(li, past.firstChild);
+      });
+      document.getElementById("events-upcoming-empty").hidden = !!up.querySelector("li");
+      document.getElementById("events-past-wrap").hidden = !past.querySelector("li");
+    })();
+  </script>
 {{ end }}

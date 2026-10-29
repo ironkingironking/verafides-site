@@ -5,6 +5,8 @@ require("dotenv").config();
 const express = require("express");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
 const { execFile } = require("child_process");
 
 const app = express();
@@ -168,6 +170,94 @@ app.post("/api/deploy/verafides/:token", async (req, res) => {
   }
 });
 
+// ── Veranstaltungen (Anmeldung) ──────────────────────────────────────────────
+// Termine kommen aus den Hugo-Dateien in content/events/. Eine Bestätigung an die angemeldete Person geht
+// nur für einen echten, noch offenen Termin hinaus und enthält keine Eingaben aus dem Formular, damit
+// sich das Formular nicht zum Versand beliebiger Texte an fremde Adressen missbrauchen lässt.
+
+const EVENTS_DIR = path.join(__dirname, "..", "content", "events");
+const MIN_FILL_SECONDS = 3;
+const REGISTRATIONS_PER_HOUR = 10;
+
+function loadEvents() {
+  let files = [];
+  try {
+    files = fs.readdirSync(EVENTS_DIR).filter((f) => f.endsWith(".md") && !f.startsWith("_"));
+  } catch (err) {
+    return [];
+  }
+  return files.map((file) => {
+    const raw = fs.readFileSync(path.join(EVENTS_DIR, file), "utf8");
+    const front = (raw.match(/^---\r?\n([\s\S]*?)\r?\n---/) || [])[1] || "";
+    const get = (key) => {
+      const m = front.match(new RegExp(`^${key}:[ \\t]*(.+)$`, "m"));
+      return m ? m[1].trim().replace(/^(["'])(.*)\1$/, "$2") : "";
+    };
+    return {
+      slug: file.replace(/\.md$/, ""),
+      title: get("title"),
+      start: new Date(get("date")),
+      end: new Date(get("end") || get("date")),
+      location: get("location"),
+      draft: get("draft") === "true",
+      registration: get("registration_enabled") === "true",
+    };
+  });
+}
+
+// Titel (so verlinkt die Termin-Seite) oder Dateiname; offen = Anmeldung aktiv und Termin noch nicht vorbei
+function findEvent(name) {
+  const ev = loadEvents().find((e) => !e.draft && (e.title === name || e.slug === name));
+  if (!ev) return null;
+  const endMs = ev.end.getTime();
+  return { ...ev, open: ev.registration && Number.isFinite(endMs) && endMs >= Date.now() };
+}
+
+const registrationLog = new Map();
+function tooManyRegistrations(ip) {
+  const now = Date.now();
+  const recent = (registrationLog.get(ip) || []).filter((t) => now - t < 3600 * 1000);
+  recent.push(now);
+  registrationLog.set(ip, recent);
+  if (registrationLog.size > 5000) registrationLog.clear();
+  return recent.length > REGISTRATIONS_PER_HOUR;
+}
+
+const clientIp = (req) => String(req.headers["x-forwarded-for"] || req.ip || "").split(",")[0].trim();
+const looksLikeEmail = (v) => /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(v) && v.length <= 254;
+
+function formatEventDate(date) {
+  if (!Number.isFinite(date.getTime())) return "";
+  const day = new Intl.DateTimeFormat("de-CH", { timeZone: "Europe/Zurich", day: "numeric", month: "long", year: "numeric" }).format(date);
+  const time = new Intl.DateTimeFormat("de-CH", { timeZone: "Europe/Zurich", hour: "2-digit", minute: "2-digit" }).format(date);
+  return `${day}, ${time} Uhr`;
+}
+
+function registrationConfirmation(ev) {
+  const when = formatEventDate(ev.start);
+  const lines = [
+    "Guten Tag",
+    "",
+    `Vielen Dank für Ihre Anmeldung. Wir haben sie für folgende Veranstaltung erhalten:`,
+    "",
+    ev.title,
+    when,
+    ev.location,
+    "",
+    "Bei Fragen antworten Sie einfach auf diese E-Mail.",
+    "",
+    "Freundliche Grüsse",
+    "Verein Vera Fides",
+    "https://verafides.ch",
+  ].filter((l, i, all) => l !== "" || all[i - 1] !== "");
+  const html = `<p>Guten Tag</p>
+<p>Vielen Dank für Ihre Anmeldung. Wir haben sie für folgende Veranstaltung erhalten:</p>
+<p><strong>${escapeHtml(ev.title)}</strong>${when ? `<br>${escapeHtml(when)}` : ""}${ev.location ? `<br>${escapeHtml(ev.location)}` : ""}</p>
+<p>Bei Fragen antworten Sie einfach auf diese E-Mail.</p>
+<p>Freundliche Grüsse<br>Verein Vera Fides<br><a href="https://verafides.ch">verafides.ch</a></p>`;
+  return { subject: `Anmeldung erhalten: ${ev.title}`, text: lines.join("\n"), html };
+}
+
 // ── /api/contact ──────────────────────────────────────────────────────────────
 
 const THANK_YOU_PATH = "/danke/";
@@ -186,6 +276,13 @@ app.post("/api/contact", async (req, res) => {
 
   // Honeypot
   if (payload.website) {
+    return res.redirect(303, isMembershipRequest ? MEMBERSHIP_THANK_YOU_PATH : THANK_YOU_PATH);
+  }
+
+  // Zu schnell ausgefüllt (Bot): ebenfalls still auf die Danke-Seite. «elapsed» misst der Browser selbst,
+  // fehlt das Feld (ohne JavaScript), wird nicht geprüft.
+  const elapsed = Number(payload.elapsed);
+  if (payload.elapsed !== undefined && payload.elapsed !== "" && Number.isFinite(elapsed) && elapsed < MIN_FILL_SECONDS) {
     return res.redirect(303, isMembershipRequest ? MEMBERSHIP_THANK_YOU_PATH : THANK_YOU_PATH);
   }
 
@@ -216,6 +313,15 @@ app.post("/api/contact", async (req, res) => {
   }
 
   const isEventRegistration = Boolean(eventName);
+  if (isEventRegistration && tooManyRegistrations(clientIp(req))) {
+    console.warn("[contact] Anmeldungen: Limit je IP erreicht");
+    return res.redirect(303, THANK_YOU_PATH);
+  }
+  const event = isEventRegistration ? findEvent(eventName) : null;
+  const eventNote = !isEventRegistration ? ""
+    : !event ? "Hinweis: Dieser Termin steht nicht in den Termin-Dateien; keine Bestätigung verschickt."
+    : !event.open ? "Hinweis: Anmeldung für diesen Termin ist geschlossen oder vorbei; keine Bestätigung verschickt."
+    : "Die angemeldete Person hat eine automatische Eingangsbestätigung erhalten.";
   const turnstileSiteKey = String(process.env.TURNSTILE_SITE_KEY || "").trim();
   const hasTurnstileSecret = Boolean(process.env.TURNSTILE_SECRET_KEY);
   const turnstileEnabled =
@@ -251,7 +357,8 @@ app.post("/api/contact", async (req, res) => {
 <p><strong>Name:</strong> ${safe(name)}<br>
 <strong>E-Mail:</strong> ${safe(email)}<br>
 <strong>Event:</strong> ${safe(eventName)}</p>
-<p><strong>Bemerkung:</strong><br>${safe(message)}</p>`
+<p><strong>Bemerkung:</strong><br>${safe(message)}</p>
+<p><em>${escapeHtml(eventNote)}</em></p>`
     : isMembershipRequest
       ? `<h2>Neue Mitgliedschaftsanfrage</h2>
 <p><strong>Name:</strong> ${safe(name)}<br>
@@ -277,7 +384,7 @@ app.post("/api/contact", async (req, res) => {
 <p><strong>Nachricht:</strong><br>${safe(message)}</p>`;
 
   const text = isEventRegistration
-    ? `Neue Veranstaltungsanmeldung\n\nName: ${name}\nE-Mail: ${email}\nEvent: ${eventName || "-"}\nBemerkung: ${message || "-"}`
+    ? `Neue Veranstaltungsanmeldung\n\nName: ${name}\nE-Mail: ${email}\nEvent: ${eventName || "-"}\nBemerkung: ${message || "-"}\n\n${eventNote}`
     : isMembershipRequest
       ? `Neue Mitgliedschaftsanfrage\n\nName: ${name}\nE-Mail: ${email}\nMitgliedschaft: ${membershipType || "-"}\nAdresse: ${address || "-"}\nNachricht: ${message || "-"}`
       : isAbuseReport
@@ -289,6 +396,15 @@ app.post("/api/contact", async (req, res) => {
   } catch (err) {
     console.error("[contact] sendMail failed:", err);
     return res.status(502).send("Message delivery failed.");
+  }
+
+  // Eingangsbestätigung an die angemeldete Person; ein Fehler hier hält die Anmeldung nicht auf
+  if (event && event.open && looksLikeEmail(email)) {
+    try {
+      await sendMail({ to: email, replyTo: to, ...registrationConfirmation(event) });
+    } catch (err) {
+      console.error("[contact] Bestätigung fehlgeschlagen:", err.message);
+    }
   }
 
   res.redirect(303, isMembershipRequest ? MEMBERSHIP_THANK_YOU_PATH : THANK_YOU_PATH);

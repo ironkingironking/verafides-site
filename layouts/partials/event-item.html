@@ -1,0 +1,12 @@
+{{/* Ein Termin in der Liste; data-end erlaubt dem Skript in section.html, vergangene Termine zu verschieben */}}
+{{ $end := time.AsTime (.Params.end | default .Date) }}
+<li class="rounded-xl border border-slate-200 p-4" data-end="{{ $end.Format "2006-01-02T15:04:05Z07:00" }}">
+  <a class="text-lg font-semibold hover:underline" href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">{{ .Title }}</a>
+  <div class="text-sm text-slate-500 mt-1">
+    {{ with .Date }}{{ .Format "02.01.2006 15:04" }}{{ end }}
+    {{ with .Params.location }} · {{ . }}{{ end }}
+  </div>
+  {{ with .Params.summary }}
+    <p class="mt-2 text-slate-700">{{ . }}</p>
+  {{ end }}
+</li>
