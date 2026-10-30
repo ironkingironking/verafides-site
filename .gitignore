@@ -13,3 +13,7 @@ static/admin/*.bak.*
 !.env.example
 !.env.listmonk.example
 .vercel
+
+# Tailwind-Ausgabe: entsteht bei npm run build; eingecheckt würde sie das Arbeitsverzeichnis auf dem Server
+# verändern, und deploy-if-changed.sh bräche bei git diff --quiet ab
+static/css/main.css
