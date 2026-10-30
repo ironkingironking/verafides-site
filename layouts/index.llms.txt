@@ -1,0 +1,46 @@
+{{- $siteName := site.Params.siteName | default site.Title -}}
+# {{ $siteName }}
+
+> {{ site.Params.description }}
+
+Vera Fides ist ein privatrechtlicher Verein nach Art. 60 ff. ZGB mit Sitz in Bern, keine Pfarrei und keine kirchliche Behörde. Die Website ist deutschsprachig. Stand dieser Übersicht: {{ now.Format "02.01.2006" }}.
+{{- $groups := slice
+  (dict "title" "Verein" "paths" (slice "/ueber/" "/ueber/mission/" "/ueber/vorstand/" "/ueber/statuten/" "/ueber/dokumente/" "/faq/"))
+  (dict "title" "Mitmachen und unterstützen" "paths" (slice "/unterstuetzen/" "/unterstuetzen/termine/" "/unterstuetzen/mitglied-werden/" "/unterstuetzen/spenden/" "/unterstuetzen/informiert-bleiben/" "/kontakt/"))
+  (dict "title" "Themen" "paths" (slice "/aktuelles/" "/aktuelles/teilaustritt/" "/aktuelles/liturgische-missbraeuche/"))
+}}
+{{- range $groups }}
+
+## {{ .title }}
+
+{{ range .paths -}}
+{{- range first 1 (where site.Pages "RelPermalink" .) -}}
+{{- $d := .Params.description | default .Params.summary | default .Summary | plainify | htmlUnescape | replaceRE "\\s+" " " | strings.TrimSpace -}}
+- [{{ .Title }}]({{ .Permalink }}){{ with $d }}: {{ . | truncate 220 }}{{ end }}
+{{ end -}}
+{{- end -}}
+{{- end -}}
+- [teilaustritt.ch](https://www.teilaustritt.ch/): Kostenloser Dienst von Vera Fides. Findet zur Postleitzahl die zuständige römisch-katholische Kirchgemeinde und erstellt das Austrittsschreiben (Deutsch, Französisch, Italienisch); Regeln je Kanton unter https://www.teilaustritt.ch/kanton/
+
+## Kommende Termine
+
+{{ $upcoming := slice -}}
+{{- range (where site.RegularPages "Section" "events").ByDate -}}
+{{- if ge (time.AsTime (.Params.end | default .Date)) now }}{{ $upcoming = $upcoming | append . }}{{ end -}}
+{{- end -}}
+{{- range $upcoming -}}
+- [{{ .Title }}]({{ .Permalink }}): {{ .Date.Format "02.01.2006, 15:04" }} Uhr{{ with .Params.location }}, {{ strings.TrimSpace . }}{{ end }}{{ with .Params.summary }}. {{ . | plainify | replaceRE "\\s+" " " | strings.TrimSpace }}{{ end }}{{ if .Params.registration_enabled }} (Anmeldung über die Terminseite){{ end }}
+{{ else -}}
+Zurzeit sind keine Termine angekündigt. Übersicht: {{ "unterstuetzen/termine/" | absURL }}
+{{ end }}
+## Neuigkeiten
+
+{{ range first 10 (where site.RegularPages "Section" "posts").ByDate.Reverse -}}
+- [{{ .Title }}]({{ .Permalink }}): {{ .Date.Format "02.01.2006" }}
+{{ end }}
+## Optional
+
+- [Impressum]({{ "impressum/" | absURL }})
+- [Datenschutz]({{ "datenschutz/" | absURL }})
+- [RSS-Feed]({{ "index.xml" | absURL }})
+- [Sitemap]({{ "sitemap.xml" | absURL }})

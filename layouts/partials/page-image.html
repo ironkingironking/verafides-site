@@ -1,0 +1,12 @@
+{{- /* Bild der Seite als absolute URL: image im Front Matter, sonst das erste Bild im Text, sonst leer */ -}}
+{{- $img := "" -}}
+{{- with .Params.image -}}
+  {{- $img = . | absURL -}}
+{{- else -}}
+  {{- if .IsPage -}}
+    {{- with findRESubmatch `<img[^>]*\ssrc="?([^"\s>]+)` .Content 1 -}}
+      {{- $img = index (index . 0) 1 | absURL -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $img -}}

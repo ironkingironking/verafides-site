@@ -133,8 +133,15 @@ defaultImage = "/images/vera-fides-header.png"
     isPlainText = true
     rel = "alternate"
     permalinkable = true
+  # llms.txt: Kurzbeschreibung der Website für KI-Suchen (layouts/index.llms.txt)
+  [outputFormats.llms]
+    mediaType = "text/plain"
+    baseName = "llms"
+    isPlainText = true
+    notAlternative = true
 
 [outputs]
+  home = ["HTML", "RSS", "llms"]
   page = ["HTML"]
 
 [security]
