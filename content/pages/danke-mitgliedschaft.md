@@ -2,6 +2,9 @@
 title: "Danke für Ihre Mitgliedschaftsanfrage"
 type: "pages"
 url: "/danke/mitgliedschaft/"
+noindex: true
+sitemap:
+  disable: true
 ---
 Vielen Dank für Ihre Mitgliedschaftsanfrage!
 

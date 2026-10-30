@@ -7,9 +7,21 @@
 {{- $description = $description | plainify | htmlUnescape | replaceRE "\\s+" " " -}}
 {{- $publisher := dict "@type" "Organization" "name" $siteName "url" $siteURL -}}
 
-{{- $organization := dict "@context" "https://schema.org" "@type" "Organization" "name" $siteName "url" $siteURL "sameAs" $sameAs -}}
+{{- $orgID := printf "%s#org" $siteURL -}}
+{{- $organization := dict
+  "@context" "https://schema.org"
+  "@type" "Organization"
+  "@id" $orgID
+  "name" $siteName
+  "alternateName" "Verein Vera Fides"
+  "url" $siteURL
+  "logo" ("images/logo.svg" | absURL)
+  "description" (.Site.Params.description | default "")
+  "address" (dict "@type" "PostalAddress" "addressLocality" "Bern" "addressCountry" "CH")
+  "sameAs" $sameAs
+-}}
 <script type="application/ld+json">{{ $organization | jsonify | safeJS }}</script>
-{{- $website := dict "@context" "https://schema.org" "@type" "WebSite" "name" $siteName "url" $siteURL -}}
+{{- $website := dict "@context" "https://schema.org" "@type" "WebSite" "@id" (printf "%s#website" $siteURL) "name" $siteName "url" $siteURL "inLanguage" "de-CH" "publisher" (dict "@id" $orgID) -}}
 <script type="application/ld+json">{{ $website | jsonify | safeJS }}</script>
 
 {{- if and .IsPage (eq .Section "posts") -}}
@@ -33,11 +45,34 @@
     "@type" "Event"
     "name" .Title
     "startDate" (.Date.Format "2006-01-02T15:04:05Z07:00")
+    "endDate" ((time.AsTime (.Params.end | default .Date)).Format "2006-01-02T15:04:05Z07:00")
+    "eventStatus" "https://schema.org/EventScheduled"
+    "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode"
     "description" $description
+    "organizer" (dict "@type" "Organization" "@id" $orgID "name" $siteName "url" $siteURL)
     "url" .Permalink
   -}}
-  {{- with .Params.end -}}{{ $event = merge $event (dict "endDate" ((time .).Format "2006-01-02T15:04:05Z07:00")) }}{{ end -}}
-  {{- with .Params.location -}}{{ $event = merge $event (dict "location" (dict "@type" "Place" "name" .)) }}{{ end -}}
+  {{- /* Ort: «Name, Strasse Nr., PLZ Ort» wird zur Postadresse, sonst bleibt er Text */ -}}
+  {{- with strings.TrimSpace (.Params.location | default "") -}}
+    {{- $loc := . -}}
+    {{- $parts := split $loc "," -}}
+    {{- $n := len $parts -}}
+    {{- $address := $loc -}}
+    {{- $name := $loc -}}
+    {{- $plzOrt := findRESubmatch `^(\d{4})\s+(.+)$` (strings.TrimSpace (index $parts (sub $n 1))) 1 -}}
+    {{- if and $plzOrt (ge $n 2) -}}
+      {{- $address = dict
+        "@type" "PostalAddress"
+        "streetAddress" (strings.TrimSpace (index $parts (sub $n 2)))
+        "postalCode" (index (index $plzOrt 0) 1)
+        "addressLocality" (index (index $plzOrt 0) 2)
+        "addressCountry" "CH"
+      -}}
+      {{- if gt $n 2 }}{{ $name = strings.TrimSpace (delimit (first (sub $n 2) $parts) ",") }}{{ end -}}
+    {{- end -}}
+    {{- $event = merge $event (dict "location" (dict "@type" "Place" "name" $name "address" $address)) -}}
+  {{- end -}}
+  {{- with partial "page-image.html" . -}}{{ $event = merge $event (dict "image" (slice .)) }}{{ end -}}
 <script type="application/ld+json">{{ $event | jsonify | safeJS }}</script>
 {{- end -}}
 

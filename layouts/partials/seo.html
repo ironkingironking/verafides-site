@@ -31,10 +31,8 @@
 {{- end -}}
 {{- $description = $description | plainify | htmlUnescape | replaceRE "\\s+" " " -}}
 
-{{- $image := "" -}}
-{{- with .Params.image -}}
-  {{- $image = . | absURL -}}
-{{- else -}}
+{{- $image := partial "page-image.html" . -}}
+{{- if not $image -}}
   {{- with .Site.Params.defaultImage -}}
     {{- $image = . | absURL -}}
   {{- end -}}
@@ -48,9 +46,13 @@
 <title>{{ $title }}</title>
 <meta name="description" content="{{ $description }}">
 <link rel="canonical" href="{{ .Permalink }}">
+{{- if .IsHome }}
+<link rel="alternate" type="text/plain" title="llms.txt" href="{{ "llms.txt" | absURL }}">
+{{- end }}
 <meta name="robots" content="{{ $robots }}">
 
 <meta property="og:site_name" content="{{ $siteName }}">
+<meta property="og:locale" content="de_CH">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $description }}">
 <meta property="og:type" content="{{ if and .IsPage (eq .Section "posts") }}article{{ else if and .IsPage (eq .Section "events") }}event{{ else }}website{{ end }}">

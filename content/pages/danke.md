@@ -2,6 +2,9 @@
 title: "Vielen Dank"
 type: "pages"
 url: "/danke/"
+noindex: true
+sitemap:
+  disable: true
 ---
 Vielen Dank für Ihre Nachricht.
 
