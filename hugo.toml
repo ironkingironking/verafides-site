@@ -11,6 +11,10 @@ description = "Vera Fides ist ein katholischer Verein in der Schweiz für Glaube
 siteName = "Vera Fides"
 defaultImage = "/images/vera-fides-header.png"
 
+# YouTube-Videos über youtube-nocookie.com einbinden (Shortcode {{< youtube >}})
+[privacy.youTube]
+  privacyEnhanced = true
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
