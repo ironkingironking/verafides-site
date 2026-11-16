@@ -7,8 +7,8 @@ Weltweit ist heute jeder siebte Christ von Verfolgung, Diskriminierung oder mass
 
 <!--more-->
 
+{{< youtube id="1BfllEEKLCU" loading="lazy" title="Die unerträgliche Realität: Warum heute jeder 7. Christ verfolgt wird" >}}
+
 Wir werten die aktuellen Berichte zur weltweiten Religionsfreiheit aus, darunter die Zahlen der Hilfswerke Kirche in Not und Open Doors. Das Video zeigt, in welchen Regionen sich die Lage besonders zuspitzt, von Nigeria über Asien bis in den Nahen Osten. Es erklärt, warum religiöser Nationalismus und Terrorgruppen zunehmen und was das für Millionen Gläubige bedeutet.
 
-<a href="https://www.youtube.com/watch?v=1BfllEEKLCU" target="_blank" rel="noopener noreferrer">Video auf YouTube ansehen (33 Minuten)</a>
-
-Haben Sie den Eindruck, dass die Medien zu wenig über Christenverfolgung berichten? Schreiben Sie es uns in die Kommentare unter dem Video. Wenn Sie unseren <a href="https://www.youtube.com/@VereinVeraFides" target="_blank" rel="noopener noreferrer">YouTube-Kanal</a> abonnieren, verpassen Sie keine neue Recherche.
+Haben Sie den Eindruck, dass die Medien zu wenig über Christenverfolgung berichten? Schreiben Sie es uns in die <a href="https://www.youtube.com/watch?v=1BfllEEKLCU" target="_blank" rel="noopener noreferrer">Kommentare unter dem Video auf YouTube</a>. Wenn Sie unseren <a href="https://www.youtube.com/@VereinVeraFides" target="_blank" rel="noopener noreferrer">YouTube-Kanal</a> abonnieren, verpassen Sie keine neue Recherche.
